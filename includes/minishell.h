@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/02 17:29:47 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/02 19:54:27 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,16 @@
 
 typedef enum e_token_type
 {
-	T_WORD,
-	T_ARG,
-	T_NEWLINE,
-	T_SPACE,
-	T_DOLLAR,
-	T_PIPE,
-	T_INRED,
-	T_OUTRED,
-	T_APPEND,
-	T_HDOC,
-	T_AMPERSAND,
-	T_AND,
-	T_OR,
-	T_DELIM,
-	T_PARENTHESES,
+	WORD,
+	ARG,
+	NEWLINE_T,
+	SPACE_T,
+	DOLLAR,
+	PIPE,
+	INRED,
+	OUTRED,
+	APPEND,
+	HDOC,
 }	t_token_type;
 
 typedef struct s_token
@@ -71,5 +66,8 @@ typedef struct s_command
 }	t_command;
 
 char	**custom_split(char *str);
+int		count_tokens(char *str);
+t_token assign_token(char *str);
+void 	print_token_type(t_token_type type);
 
 #endif
