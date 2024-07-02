@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/06/26 15:24:01 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:29:47 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,21 @@
 
 typedef enum e_token_type
 {
-	GREAT,
-	LESS,
-	GREATGREAT,
-	GREATAMPERSAND,
-	PIPE,
-	AMPERSAND,
-	WORD,
-	NUMBER,
-	TSPACE,
-	APPEND,
-	HDOC,
-	ARG
+	T_WORD,
+	T_ARG,
+	T_NEWLINE,
+	T_SPACE,
+	T_DOLLAR,
+	T_PIPE,
+	T_INRED,
+	T_OUTRED,
+	T_APPEND,
+	T_HDOC,
+	T_AMPERSAND,
+	T_AND,
+	T_OR,
+	T_DELIM,
+	T_PARENTHESES,
 }	t_token_type;
 
 typedef struct s_token
