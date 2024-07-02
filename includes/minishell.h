@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/02 19:54:27 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/02 21:13:21 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_command
 char	**custom_split(char *str);
 int		count_tokens(char *str);
 t_token assign_token(char *str);
-void 	print_token_type(t_token_type type);
+void	start_debug_mode(int num_tokens, char **words, t_token *tokens);
+void	*ft_malloc(size_t bytes);
 
 #endif
