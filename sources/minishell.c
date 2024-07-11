@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:59 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/02 21:14:45 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:50:34 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(void)
 				i++;
 			}
 			start_debug_mode(num_tokens, words, tokens);
+			add_history(input);
 			free(input);
 		}
 		else

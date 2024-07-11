@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/09 14:25:03 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:31:30 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 
 typedef enum e_token_type
 {
@@ -37,6 +38,7 @@ typedef enum e_token_type
 	OUTRED,
 	APPEND,
 	HDOC,
+	ERROR,
 }	t_token_type;
 
 typedef struct s_token

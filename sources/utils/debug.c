@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:27:06 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/02 21:18:49 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:26:18 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	print_token(t_token token, int i)
 		printf("[APPEND]");
 	else if (token.type == HDOC)
 		printf("[HDOC]");
+	else if (token.type == ERROR)
+		printf("[ERROR]");
 	printf(",	value[%s]\n", token.value);
 }
 

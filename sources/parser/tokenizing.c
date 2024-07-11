@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/11 14:18:13 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:26:55 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,21 @@ t_token assign_token(char *str)
 	token.value = str;
 	if (str[0] == ' ')
 		token.type = SPACE_T;
-	else if (str[0] == '-' && str[1] != '-')
+	else if (!strncmp(str, "-", 1))
 		token.type = ARG;
 	else if (is_word(str))
 		token.type = WORD;
-	else if (str[0] == '<' && str[1] == '\0')
+	else if (!strcmp(str, "<"))
 		token.type = INRED;
-	else if (str[0] == '>' && str[1] == '\0')
+	else if (!strcmp(str, ">"))
 		token.type = OUTRED;
-	else if (str[0] == '|')
+	else if (!strcmp(str, "|"))
 		token.type = PIPE;
-	else if (str[0] == '<' && str[1] == '<' && str[2] == '\0')
+	else if (!strncmp(str, "<<", 2) && strlen(str) > 2)
 		token.type = HDOC;
-	else if (str[0] == '>' && str[1] == '>' && str[2] == '\0')
+	else if (!strcmp(str, ">>"))
 		token.type = APPEND;
+	else
+		token.type = ERROR;
 	return (token);
 }
