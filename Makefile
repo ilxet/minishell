@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+         #
+#    By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 17:15:13 by pschmunk          #+#    #+#              #
-#    Updated: 2024/07/02 21:00:11 by pschmunk         ###   ########.fr        #
+#    Updated: 2024/07/11 16:42:08 by aadamik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,23 @@ MINISHELL_SRC =	./sources/minishell.c			\
 
 MINISHELL_OBJ = $(MINISHELL_SRC:.c=.o)
 
+LIBFTPRINTF = ./includes/printf/libftprintf.a
+LIBFTPRINTF_DIR = ./includes/printf
+
 all: $(MINISHELL)
 
-$(MINISHELL): $(MINISHELL_OBJ)
-	$(CC) $(CFLAGS) $(MINISHELL_OBJ) -o minishell $(RFLAG)
+$(MINISHELL): $(MINISHELL_OBJ) $(LIBFTPRINTF)
+	$(CC) $(CFLAGS) $(MINISHELL_OBJ) $(LIBFTPRINTF) -o minishell $(RFLAG)
+
+$(LIBFTPRINTF):
+	make -C $(LIBFTPRINTF_DIR)
 
 clean:
 	$(RM) $(MINISHELL_OBJ)
+	make -C $(LIBFTPRINTF_DIR) clean
 fclean: clean
 	$(RM) $(MINISHELL)
+	make -C $(LIBFTPRINTF_DIR) fclean
 re: fclean all
+
+.PHONY:	all clean fclean re 
