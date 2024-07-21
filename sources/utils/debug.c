@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:27:06 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/20 22:35:28 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/07/21 17:21:51 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,6 @@ void	print_tokens(char **words, t_token *tokens)
 		print_token(tokens[i], i);
 		i++;
 	}
-}
-
-void print_env(char **envp)
-{
-	(void) envp;	
 }
 
 void	start_debug_mode(int num_tokens, char **words, t_token *tokens)
