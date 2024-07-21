@@ -3,23 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:59 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/11 17:50:34 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/20 22:51:06 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
 	int		i;
 	int		num_tokens;
 	char	*input;
 	char	**words;
 	t_token	*tokens;
-
+	(void)ac;
+	(void)av;
+	
+	
 	while (1)
 	{
 		input = readline(PROMPT);
