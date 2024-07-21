@@ -6,7 +6,7 @@
 #    By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 17:15:13 by pschmunk          #+#    #+#              #
-#    Updated: 2024/07/11 17:00:03 by pschmunk         ###   ########.fr        #
+#    Updated: 2024/07/21 16:59:22 by pschmunk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ MINISHELL = minishell
 MINISHELL_SRC =	./sources/minishell.c			\
 				./sources/parser/custom_split.c	\
 				./sources/parser/tokenizing.c	\
+				./sources/parser/list.c			\
 				./sources/utils/debug.c			\
 				./sources/utils/utils.c			\
 
