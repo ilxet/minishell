@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/11 19:58:38 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/05 17:38:33 by aadamik          ###   ########.fr       */
+/*   Created: 2024/08/06 16:10:01 by aadamik           #+#    #+#             */
+/*   Updated: 2024/08/06 16:11:27 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
-
-void	ft_pwd(void)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	char *cwd;
-
-	cwd = getcwd(NULL, 0);
-	ft_putstr_fd(cwd, 1);
-	ft_putstr_fd("\n", 1);
-	free(cwd);
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return *(unsigned char *)s1 - *(unsigned char *)s2;
 }

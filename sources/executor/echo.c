@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:23:12 by aadamik           #+#    #+#             */
-/*   Updated: 2024/07/21 16:26:51 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/05 17:38:09 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,4 @@ void ft_echo(char **args)
 	}
 	if (!n_flag)
 		ft_putstr_fd("\n", 1);
-}
-
-int main(int ac, char **av)
-{
-	ft_echo(av);
-	return (0);
 }

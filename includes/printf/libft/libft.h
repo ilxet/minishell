@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 21:59:46 by aadamik           #+#    #+#             */
-/*   Updated: 2024/04/05 19:19:51 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/06 16:11:52 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
-
+int		ft_strcmp(const char *s1, const char *s2);
 #endif

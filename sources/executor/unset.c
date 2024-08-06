@@ -6,14 +6,13 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 20:57:57 by aadamik           #+#    #+#             */
-/*   Updated: 2024/07/18 17:48:39 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/06 16:24:32 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../includes/minishell_alex.h"
 
-
-int ft_check_key(char *key)
+int	ft_check_key(char *key)
 {
 	int i;
 
@@ -29,7 +28,30 @@ int ft_check_key(char *key)
 	return (1);
 }
 
-int ft_unset(char **args)
+void	ft_unsetenv(t_env **env_list, char *key)
+{
+	t_env *current = *env_list;
+	t_env *prev = NULL;
+
+	while (current)
+	{
+		size_t key_len = current->end_key - current->start_key + 1;
+		if (ft_strncmp(current->start_key, key, key_len) == 0 && key[key_len] == '\0')
+		{
+			if (prev)
+				prev->next = current->next;
+			else
+				*env_list = current->next;
+			free(current->env_var);
+			free(current);
+			return;
+		}
+		prev = current;
+		current = current->next;
+	}
+}
+
+int	ft_unset(t_env **env_list, char **args)
 {
 	int i;
 	int exit_status;
@@ -48,7 +70,7 @@ int ft_unset(char **args)
 			exit_status = 1;
 		}
 		else
-			unsetenv(args[i]);
+			ft_unsetenv(env_list, args[i]);
 		i++;
 	}
 	return (exit_status);
