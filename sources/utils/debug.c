@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:27:06 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/21 17:21:51 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/07/25 19:56:27 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,32 @@ void	print_split(char **words)
 	}
 }
 
-void	print_token(t_token token, int i)
+void	print_token(t_token *token, int i)
 {
 	printf("Token[%d], type", i);
-	if (token.type == WORD)
+	if (token->type == WORD)
 		printf("[WORD]");
-	else if (token.type == ARG)
+	else if (token->type == ARG)
 		printf("[ARG]");
-	else if (token.type == NEWLINE_T)
+	else if (token->type == NEWLINE_T)
 		printf("[NEWLINE]");
-	else if (token.type == SPACE_T)
+	else if (token->type == SPACE_T)
 		printf("[SPACE]");
-	else if (token.type == DOLLAR)
+	else if (token->type == DOLLAR)
 		printf("[DOLLAR]");
-	else if (token.type == PIPE)
+	else if (token->type == PIPE)
 		printf("[PIPE]");
-	else if (token.type == INRED)
+	else if (token->type == INRED)
 		printf("[INRED]");
-	else if (token.type == OUTRED)
+	else if (token->type == OUTRED)
 		printf("[OUTRED]");
-	else if (token.type == APPEND)
+	else if (token->type == APPEND)
 		printf("[APPEND]");
-	else if (token.type == HDOC)
+	else if (token->type == HDOC)
 		printf("[HDOC]");
-	else if (token.type == ERROR)
+	else if (token->type == ERROR)
 		printf("[ERROR]");
-	printf(",	value[%s]\n", token.value);
+	printf(",	value[%s]\n", token->value);
 }
 
 void	print_tokens(char **words, t_token *tokens)
@@ -59,12 +59,57 @@ void	print_tokens(char **words, t_token *tokens)
 	i = 0;
 	while (words[i] != NULL)
 	{
-		print_token(tokens[i], i);
+		print_token(&tokens[i], i);
 		i++;
 	}
 }
 
-void	start_debug_mode(int num_tokens, char **words, t_token *tokens)
+void	print_command(t_command *cmd)
+{
+	int	i;
+	t_args *temp1 = cmd->args;
+	
+	i = 0;
+	printf("\nArguments:\n");
+	while (temp1 != NULL)
+	{
+		print_token(temp1->token, i);
+		temp1 = temp1->next;
+		i++;
+	}
+	i = 0;
+	printf("\nInput Redirections:\n");
+	while (cmd->inred != NULL)
+	{
+		print_token(cmd->inred->token, i);
+		cmd->inred = cmd->inred->next;
+		i++;
+	}
+	i = 0;
+	printf("\nOutput Redirections:\n");
+	while (cmd->outred != NULL)
+	{
+		print_token(cmd->outred->token, i);
+		cmd->outred = cmd->outred->next;
+		i++;
+	}
+}
+
+void	print_commands(int num_cmds, t_command *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_cmds)
+	{
+		printf("|________________| Command[%d] |________________|\n", i);
+		print_command(&cmds[i]);
+		printf("\n");
+		i++;
+	}
+}
+
+void	start_debug_mode(char **words, int num_tokens, t_token *tokens, int num_cmds, t_command *cmds)
 {
 	printf("\n################################ DEBUGGING CONSOLE ################################\n");
 	printf("\nNUMBER OF TOKENS: %d\n", num_tokens);
@@ -72,5 +117,6 @@ void	start_debug_mode(int num_tokens, char **words, t_token *tokens)
 	print_split(words);
 	printf("\nAFTER TOKENIZING:\n");
 	print_tokens(words, tokens);
-	printf("\n###################################################################################\n");
+	printf("\nAFTER ADDING COMMANDS:\n");
+	print_commands(num_cmds, cmds);
 }

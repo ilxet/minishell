@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 15:07:03 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/21 16:56:15 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:17:57 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_args	*lstnew_args(void *content)
 {
 	t_args	*new_node;
 
-	new_node = malloc(sizeof(t_token));
+	new_node = malloc(sizeof(t_args));
 	if (new_node == NULL)
 		return (NULL);
 	new_node->token = content;
@@ -48,11 +48,16 @@ t_args	*lstnew_args(void *content)
 	return (new_node);
 }
 
-void	lstadd_inred(t_inred *lst, t_inred *new)
+void	lstadd_inred(t_inred **lst, t_inred *new)
 {
 	t_inred	*curr;
 
-	curr = lst;
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	curr = *lst;
 	while (curr->next != NULL)
 	{
 		curr = curr->next;
@@ -60,11 +65,16 @@ void	lstadd_inred(t_inred *lst, t_inred *new)
 	curr->next = new;
 }
 
-void	lstadd_outred(t_outred *lst, t_outred *new)
+void	lstadd_outred(t_outred **lst, t_outred *new)
 {
 	t_outred	*curr;
 
-	curr = lst;
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	curr = *lst;
 	while (curr->next != NULL)
 	{
 		curr = curr->next;
@@ -72,11 +82,16 @@ void	lstadd_outred(t_outred *lst, t_outred *new)
 	curr->next = new;
 }
 
-void	lstadd_args(t_args *lst, t_args *new)
+void	lstadd_args(t_args **lst, t_args *new)
 {
 	t_args	*curr;
 
-	curr = lst;
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	curr = *lst;
 	while (curr->next != NULL)
 	{
 		curr = curr->next;

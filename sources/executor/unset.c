@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 20:57:57 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/06 16:24:32 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/06 17:43:36 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell_alex.h"
+#include "../../includes/minishell.h"
 
 int	ft_check_key(char *key)
 {

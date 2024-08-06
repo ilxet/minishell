@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:10:49 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/06 16:47:39 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/06 17:43:25 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell_alex.h"
+#include "../../includes/minishell.h"
 
 void swap_env_vars(t_env **a, t_env **b)
 {
