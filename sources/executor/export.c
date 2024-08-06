@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:10:49 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/06 18:05:46 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/06 19:34:45 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,10 @@ int count_env_vars(t_env *env_list)
 
 void print_env_var(t_env *env)
 {
-	int key_length;
-
-	key_length = env->end_key - env->start_key + 1;
 	printf("declare -x ");
+	
+	int key_length = env->end_key - env->start_key + 1;
 	write(1, env->start_key, key_length);
-
 	if (env->equal_sign)
 	{
 		printf("=\"");
@@ -87,8 +85,9 @@ void print_sorted_env_vars(t_env *env_list)
 	current = env_list;
 	while (current)
 	{
-		env_array[i++] = current;
+		env_array[i] = current;
 		current = current->next;
+		i++;
 	}
     bubble_sort_env_vars(env_array, count);
 	i = 0;
@@ -100,8 +99,6 @@ void print_sorted_env_vars(t_env *env_list)
     free(env_array);
 }
 
-
-
 int	print_error(char *arg)
 {
 	ft_putstr_fd("export: `", 2);
@@ -110,42 +107,11 @@ int	print_error(char *arg)
 	return (1);
 }
 
-// t_env	*create_env_node(char *var)
-// {
-// 	t_env	*new_node;
-
-// 	new_node = malloc(sizeof(t_env));
-// 	if (!new_node)
-// 		return NULL;
-// 	new_node->env_var = ft_strdup(var);
-// 	if (!new_node->env_var)
-// 	{
-// 		free(new_node);
-// 		return NULL;
-// 	}
-// 	new_node->equal_sign = ft_strchr(new_node->env_var, '=');
-// 	new_node->start_key = new_node->env_var;
-// 	if (new_node->equal_sign)
-// 	{
-// 		new_node->end_key = new_node->equal_sign - 1;
-// 		new_node->start_value = new_node->equal_sign + 1;
-// 		new_node->end_value = new_node->env_var + strlen(new_node->env_var) - 1;
-// 	}
-// 	else
-// 	{
-// 		new_node->end_key = new_node->env_var + strlen(new_node->env_var) - 1;
-// 		new_node->start_value = NULL;
-// 		new_node->end_value = NULL;
-// 	}
-// 	new_node->next = NULL;
-//  	return new_node;
-// }
-
 t_env *create_env_node(char *var)
 {
-	printf("Debug: Entering create_env_node with var: %s\n", var);
+	t_env *new_node;
 
-	t_env *new_node = malloc(sizeof(t_env));
+	new_node = malloc(sizeof(t_env));
 	if (!new_node)
 	{
 		printf("Error: Memory allocation failed in create_env_node\n");
@@ -175,133 +141,45 @@ t_env *create_env_node(char *var)
 		new_node->start_value = NULL;
 		new_node->end_value = NULL;
 	}
-
 	new_node->next = NULL;
-
-	printf("Debug: Node created successfully\n");
 	return new_node;
 }
 
-
-// void ft_setenv(t_env **env_list, char *key, char *value)
-// {
-// 	t_env	*current;
-// 	t_env	*prev;
-// 	int		key_len;
-
-// 	current = *env_list;
-// 	prev = NULL;
-// 	key_len = ft_strlen(key);
-// 	while (current)
-// 	{
-// 		if (ft_strncmp(current->start_key, key, key_len) == 0 && (current->equal_sign == current->start_key + key_len))
-// 		{
-// 			char *new_var = malloc(ft_strlen(key) + ft_strlen(value) + 2);
-// 			if (!new_var)
-// 				return;
-// 			sprintf(new_var, "%s=%s", key, value);
-// 			free(current->env_var);
-// 			current->env_var = new_var;
-// 			current->equal_sign = ft_strchr(current->env_var, '=');
-// 			current->start_key = current->env_var;
-// 			current->end_key = current->equal_sign - 1;
-// 			current->start_value = current->equal_sign + 1;
-// 			current->end_value = current->env_var + ft_strlen(current->env_var) - 1;
-// 			return;
-// 		}
-// 		prev = current;
-// 		current = current->next;
-// 	}
-// 	char *new_var = malloc(ft_strlen(key) + ft_strlen(value) + 2);
-// 	if (!new_var)
-// 		return;
-// 	sprintf(new_var, "%s=%s", key, value);
-// 	t_env *new_node = create_env_node(new_var);
-// 	free(new_var);
-// 	if (!new_node)
-// 		return;
-// 	if (prev)
-// 		prev->next = new_node;
-// 	else
-// 		*env_list = new_node;
-// }
 void ft_setenv(t_env **env_list, char *key, char *value)
 {
-	t_env *current = *env_list;
-	t_env *prev = NULL;
-	size_t key_len;
+	t_env *current;
+	t_env *prev;
 
-	printf("Debug: Entering ft_setenv with key: %s, value: %s\n", key, value ? value : "NULL");
-
-	if (!key)
-	{
-		printf("Error: Null key in ft_setenv\n");
-		return;
-	}
-
-	key_len = strlen(key);
-
+	prev = NULL;
+	current = *env_list;
 	while (current)
 	{
-		printf("Debug: Checking node with key: %s\n", current->start_key);
-		if (strncmp(current->start_key, key, key_len) == 0 && 
-			(current->equal_sign == current->start_key + key_len || current->equal_sign == NULL))
+		if (ft_strcmp(current->start_key, key) == 0)
 		{
-			printf("Debug: Updating existing variable\n");
-			// Update existing variable
-			char *new_var;
-			size_t new_var_len = strlen(key) + (value ? strlen(value) + 1 : 0) + 1;
-			new_var = malloc(new_var_len);
+			char *new_var = ft_strjoin3(key, "=", value ? value : "");
 			if (!new_var)
 			{
 				printf("Error: Memory allocation failed in ft_setenv\n");
 				return;
 			}
-
-			if (value)
-				snprintf(new_var, new_var_len, "%s=%s", key, value);
-			else
-				snprintf(new_var, new_var_len, "%s", key);
-
 			free(current->env_var);
 			current->env_var = new_var;
-			current->equal_sign = strchr(current->env_var, '=');
+			current->equal_sign = ft_strchr(current->env_var, '=');
 			current->start_key = current->env_var;
-			if (current->equal_sign)
-			{
-				current->end_key = current->equal_sign - 1;
-				current->start_value = current->equal_sign + 1;
-				current->end_value = current->env_var + strlen(current->env_var) - 1;
-			}
-			else
-			{
-				current->end_key = current->env_var + strlen(current->env_var) - 1;
-				current->start_value = NULL;
-				current->end_value = NULL;
-			}
-			printf("Debug: Variable updated successfully\n");
+			current->end_key = current->equal_sign ? current->equal_sign - 1 : current->env_var + ft_strlen(current->env_var) - 1;
+			current->start_value = current->equal_sign ? current->equal_sign + 1 : NULL;
+			current->end_value = current->start_value ? current->env_var + ft_strlen(current->env_var) - 1 : NULL;
 			return;
 		}
 		prev = current;
 		current = current->next;
 	}
-
-	printf("Debug: Adding new variable\n");
-	// Add new variable
-	char *new_var;
-	size_t new_var_len = strlen(key) + (value ? strlen(value) + 1 : 0) + 1;
-	new_var = malloc(new_var_len);
+	char *new_var = ft_strjoin3(key, "=", value ? value : "");
 	if (!new_var)
 	{
 		printf("Error: Memory allocation failed in ft_setenv\n");
 		return;
 	}
-
-	if (value)
-		snprintf(new_var, new_var_len, "%s=%s", key, value);
-	else
-		snprintf(new_var, new_var_len, "%s", key);
-
 	t_env *new_node = create_env_node(new_var);
 	free(new_var);
 	if (!new_node)
@@ -314,8 +192,22 @@ void ft_setenv(t_env **env_list, char *key, char *value)
 		prev->next = new_node;
 	else
 		*env_list = new_node;
+}
 
-	printf("Debug: New variable added successfully\n");
+char *extract_key(char *arg, char *equal_sign)
+{
+	int key_length;
+	char *key;
+
+	if (!arg || !equal_sign)
+		return NULL;
+	key_length = equal_sign - arg;
+	key = malloc(key_length + 1);
+	if (!key)
+		return NULL;
+	ft_strncpy(key, arg, key_length);
+	key[key_length] = '\0';
+	return key;
 }
 
 int ft_export(t_env **env_list, char **args)
@@ -323,99 +215,59 @@ int ft_export(t_env **env_list, char **args)
 	int i;
 	int exit_status;
 	char *equal_sign;
+	char *arg_copy;
 	char *key;
-
-	printf("Debug: Entering ft_export\n");
 
 	i = 1;
 	exit_status = 0;
 	if (!args[1])
 	{
-		printf("Debug: No arguments, printing sorted env vars\n");
 		print_sorted_env_vars(*env_list);
 		return (0);
 	}
 
 	while (args[i])
 	{
-		printf("Debug: Processing argument: %s\n", args[i]);
-		equal_sign = ft_strchr(args[i], '=');
+		arg_copy = ft_strdup(args[i]);
+		if (!arg_copy)
+		{
+			printf("Error: Memory allocation failed in ft_export\n");
+			return (1);
+		}
+		
+		equal_sign = ft_strchr(arg_copy, '=');
 		if (equal_sign)
 		{
-			printf("Debug: Found equal sign in argument\n");
-			key = ft_strdup(args[i]);  // Create a copy of the argument
-			if (!key)
+			if (equal_sign == arg_copy)
 			{
-				printf("Error: Memory allocation failed in ft_export\n");
-				return (1);
+				exit_status = print_error(arg_copy);
+				free(arg_copy);
+				i++;
+				continue;
 			}
-			key[equal_sign - args[i]] = '\0';  // Null-terminate the key
-			printf("Debug: Checking key: %s\n", key);
-			if (ft_check_key(key))
+			*equal_sign = '\0';
+		}
+		key = arg_copy;
+		if (ft_check_key(key))
+		{
+			if (equal_sign)
 			{
-				printf("Debug: Valid key, setting env\n");
-				printf("Debug: Key: %s, Value: %s\n", key, equal_sign + 1);
+				*equal_sign = '=';
 				ft_setenv(env_list, key, equal_sign + 1);
 			}
 			else
 			{
-				printf("Debug: Invalid key\n");
-				exit_status = print_error(key);
+				ft_setenv(env_list, key, NULL);
 			}
-			free(key);  // Free the allocated memory
 		}
 		else
 		{
-			printf("Debug: No equal sign in argument\n");
-			if (!ft_check_key(args[i]))
-			{
-				printf("Debug: Invalid key (no value)\n");
-				exit_status = print_error(args[i]);
-			}
-			else
-			{
-				printf("Debug: Valid key (no value), setting env\n");
-				ft_setenv(env_list, args[i], NULL);
-			}
+			if (equal_sign)
+				*equal_sign = '=';
+			exit_status = print_error(key);
 		}
+		free(arg_copy);
 		i++;
 	}
-
-	printf("Debug: Exiting ft_export with status: %d\n", exit_status);
 	return (exit_status);
 }
-
-// int	ft_export(t_env **env_list, char **args)
-// {
-// 	int		i;
-// 	int		exit_status;
-// 	char	*equal_sign;
-
-// 	i = 1;
-// 	exit_status = 0;
-// 	if (!args[1])
-// 	{
-// 		print_sorted_env_vars(*env_list);
-// 		return (0);
-// 	}
-// 	while (args[i])
-// 	{
-// 		equal_sign = ft_strchr(args[i], '=');
-// 		if (equal_sign)
-// 		{
-// 			*equal_sign = '\0';
-// 			if (ft_check_key(args[i]))
-// 				ft_setenv(env_list, args[i], equal_sign + 1);
-// 			else
-// 				exit_status = print_error(args[i]);
-// 			*equal_sign = '=';
-// 		}
-// 		else
-// 		{
-// 			if (ft_check_key(args[i]))
-// 				exit_status = print_error(args[i]);
-// 		}
-// 		i++;
-// 	}
-// 	return (exit_status);
-// }

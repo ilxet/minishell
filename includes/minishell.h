@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/06 17:54:20 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:52:43 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,10 @@ int			count_env_vars(t_env *env_list);
 void		bubble_sort_env_vars(t_env **env_array, int count);
 void		ft_setenv(t_env **env_list, char *key, char *value);
 void		swap_env_vars(t_env **a, t_env **b);
+char 		*extract_key(char *arg, char *equal_sign);
 
 //UTILS
+char		*ft_strjoin3(char *s1,char *s2, char *s3);
 void		*ft_malloc(size_t bytes);
 int			print_error(char *arg);
 void		print_env(t_env *head);
