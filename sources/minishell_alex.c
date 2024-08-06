@@ -6,11 +6,11 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:59 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/06 16:48:23 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/06 17:58:47 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_alex.h"
+#include "../includes/minishell.h"
 
 t_env	*create_node(char *env_var)
 {
@@ -133,7 +133,7 @@ void	free_env(t_env *head)
 // 	}
 // 	return (0);
 // }
-void add_to_env_list(t_env **env_list, const char *var)
+void add_to_env_list(t_env **env_list, char *var)
 {
     t_env *new_node = create_env_node(var);
     if (new_node)
