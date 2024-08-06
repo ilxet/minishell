@@ -3,23 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:59 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/21 17:23:38 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/07/25 20:00:46 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **env)
+int	main(void)
 {
-	int		i;
-	int		num_tokens;
-	char	*input;
-	char	**words;
-	t_token	*tokens;
-	int		num_cmds;
+	int			i;
+	int			num_cmds;
+	int			num_tokens;
+	char		*input;
+	char		**words;
+	t_token		*tokens;
+	t_command	*cmds;
 
 	while (1)
 	{
@@ -43,9 +44,9 @@ int	main(int ac, char **av, char **env)
 					num_cmds++;
 				i++;
 			}
-			// cmds = ft_malloc(num_cmds * sizeof(t_command));
-			// cmds = add_commands(num_cmds, cmds, num_tokens, tokens);
-			start_debug_mode(num_tokens, words, tokens);
+			cmds = ft_malloc(num_cmds * sizeof(t_command));
+			cmds = add_commands(cmds, num_tokens, tokens);
+			start_debug_mode(words, num_tokens, tokens, num_cmds, cmds);
 			add_history(input);
 			free(input);
 		}

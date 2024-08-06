@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/21 17:01:24 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:58:14 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,46 +92,36 @@ t_token assign_redir(char *str, t_token_type redir_type)
 	return (token);
 }
 
-t_command init_command()
-{
-	t_command	cmd;
-
-	cmd.inred = lstnew_inred(NULL);
-	cmd.outred = lstnew_outred(NULL);
-	cmd.args = lstnew_args(NULL);
-	return (cmd);
-}
-
-void	add_to_command(t_command cmd, t_token *token)
+void	add_to_command(t_command *cmd, t_token *token)
 {
 	if (token->type == INRED)
 	{
-		cmd.inred->token = token;
-		lstadd_inred(cmd.inred, cmd.inred);
+		if (cmd->inred == NULL)
+			cmd->inred = lstnew_inred(token);
+		else
+			lstadd_inred(&cmd->inred, lstnew_inred(token));
 	}
 	else if (token->type == OUTRED)
 	{
-		cmd.outred->token = token;
-		lstadd_outred(cmd.outred, cmd.outred);
+		if (cmd->outred == NULL)
+			cmd->outred = lstnew_outred(token);
+		else
+			lstadd_outred(&cmd->outred, lstnew_outred(token));
 	}
 	else
 	{
-		cmd.args->token = token;
-		lstadd_args(cmd.args, cmd.args);
+		if (cmd->args == NULL)
+			cmd->args = lstnew_args(token);
+		else
+			lstadd_args(&cmd->args, lstnew_args(token));
 	}
 }
 
-t_command	*add_commands(int num_cmds, t_command *cmds, int num_tokens, t_token *tokens)
+t_command	*add_commands(t_command *cmds, int num_tokens, t_token *tokens)
 {
 	int	i;
 	int	cmd_i;
 
-	i = 0;
-	while (i < num_cmds)
-	{
-		cmds[i] = init_command();
-		i++;
-	}
 	i = 0;
 	cmd_i = 0;
 	while (i < num_tokens)
@@ -139,10 +129,10 @@ t_command	*add_commands(int num_cmds, t_command *cmds, int num_tokens, t_token *
 		if (tokens[i].type == PIPE)
 			cmd_i++;
 		else if (tokens[i].type != SPACE_T
-			|| tokens[i].type != APPEND
-			|| tokens[i].type != HDOC
-			|| tokens[i].type != ERROR)
-			add_to_command(cmds[cmd_i], &tokens[i]);
+			&& tokens[i].type != APPEND
+			&& tokens[i].type != HDOC
+			&& tokens[i].type != ERROR)
+			add_to_command(&cmds[cmd_i], &tokens[i]);
 		i++;
 	}
 	return (cmds);
