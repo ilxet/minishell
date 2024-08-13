@@ -6,9 +6,10 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/13 18:09:20 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:18:52 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -106,6 +107,18 @@ void			free_env(t_env *head);
 void			add_to_env_list(t_env **env_list, const char *var);
 
 //EXECUTOR
+void		ft_echo(char **args);
+void		ft_pwd(void);
+int			ft_check_key(char *key);
+void		ft_unsetenv(t_env **env_list, char *key);
+int			ft_unset(t_env **env_list, char **args);
+int			ft_export(t_env **env_list, char **args);
+t_env		*create_env_node(char *var);
+int			count_env_vars(t_env *env_list);
+void		bubble_sort_env_vars(t_env **env_array, int count);
+void		ft_setenv(t_env **env_list, char *key, char *value);
+void		swap_env_vars(t_env **a, t_env **b);
+char 		*extract_key(char *arg, char *equal_sign);
 void			ft_echo(char **args);
 void			ft_pwd(void);
 int				ft_check_key(char *key);
@@ -119,6 +132,12 @@ void			ft_setenv(t_env **env_list, char *key, char *value);
 void			swap_env_vars(t_env **a, t_env **b);
 
 //UTILS
+char		*ft_strjoin3(char *s1,char *s2, char *s3);
+void		*ft_malloc(size_t bytes);
+int			print_error(char *arg);
+void		print_env(t_env *head);
+void		print_sorted_env_vars(t_env *env_list);
+void		start_debug_mode(char **words, int num_tokens, t_token *tokens, int num_cmds, t_command *cmds);
 void			*ft_malloc(size_t bytes);
 int				print_error(char *arg);
 void			print_env(t_env *head);
