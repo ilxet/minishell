@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:10:49 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/06 19:34:45 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/09 16:28:17 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,36 +52,42 @@ int count_env_vars(t_env *env_list)
     return count;
 }
 
-void print_env_var(t_env *env)
+void	print_env_var(t_env *env)
 {
-	printf("declare -x ");
+	int	key_length;
+	int	value_length;
+
+	write(1, "declare -x ", 11);
 	
-	int key_length = env->end_key - env->start_key + 1;
+	key_length = env->end_key - env->start_key + 1;
 	write(1, env->start_key, key_length);
+	
 	if (env->equal_sign)
 	{
-		printf("=\"");
+		write(1, "=\"", 2);
 		if (env->start_value)
 		{
-			int value_length = env->end_value - env->start_value + 1;
+			value_length = env->end_value - env->start_value + 1;
 			write(1, env->start_value, value_length);
 		}
-		printf("\"");
+		write(1, "\"", 2);
 	}
-	printf("\n");
+	write(1, "\n", 2);
 }
 
-void print_sorted_env_vars(t_env *env_list)
+
+void	print_sorted_env_vars(t_env *env_list)
 {
 	int		count;
 	t_env	**env_array;
 	t_env	*current;
+	int		i;
 
 	count = count_env_vars(env_list);
 	env_array = malloc(count * sizeof(t_env *));
 	if (!env_array)
 		return;
-	int i = 0;
+	i = 0;
 	current = env_list;
 	while (current)
 	{
@@ -89,14 +95,14 @@ void print_sorted_env_vars(t_env *env_list)
 		current = current->next;
 		i++;
 	}
-    bubble_sort_env_vars(env_array, count);
+	bubble_sort_env_vars(env_array, count);
 	i = 0;
 	while (i < count)
 	{
 		print_env_var(env_array[i]);
 		i++;
 	}
-    free(env_array);
+	free(env_array);
 }
 
 int	print_error(char *arg)
@@ -107,61 +113,54 @@ int	print_error(char *arg)
 	return (1);
 }
 
-t_env *create_env_node(char *var)
+t_env	*create_env_node(char *var)
 {
-	t_env *new_node;
+	t_env	*new_node;
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-	{
-		printf("Error: Memory allocation failed in create_env_node\n");
-		return NULL;
-	}
-
-	new_node->env_var = strdup(var);
+		return (NULL);
+	new_node->env_var = ft_strdup(var);
 	if (!new_node->env_var)
 	{
-		printf("Error: strdup failed in create_env_node\n");
 		free(new_node);
-		return NULL;
+		return (NULL);
 	}
-
-	new_node->equal_sign = strchr(new_node->env_var, '=');
+	new_node->equal_sign = ft_strchr(new_node->env_var, '=');
 	new_node->start_key = new_node->env_var;
-	
 	if (new_node->equal_sign)
 	{
 		new_node->end_key = new_node->equal_sign - 1;
 		new_node->start_value = new_node->equal_sign + 1;
-		new_node->end_value = new_node->env_var + strlen(new_node->env_var) - 1;
+		new_node->end_value = new_node->env_var + ft_strlen(new_node->env_var) - 1;
 	}
 	else
 	{
-		new_node->end_key = new_node->env_var + strlen(new_node->env_var) - 1;
+		new_node->end_key = new_node->env_var + ft_strlen(new_node->env_var) - 1;
 		new_node->start_value = NULL;
 		new_node->end_value = NULL;
 	}
 	new_node->next = NULL;
-	return new_node;
+	return (new_node);
 }
 
-void ft_setenv(t_env **env_list, char *key, char *value)
+void	ft_setenv(t_env **env_list, char *key, char *value)
 {
-	t_env *current;
-	t_env *prev;
+	t_env	*current;
+	t_env	*new_node;
+	char	*new_var;
 
-	prev = NULL;
 	current = *env_list;
 	while (current)
 	{
-		if (ft_strcmp(current->start_key, key) == 0)
+		if (ft_strncmp(current->start_key, key, current->end_key - current->start_key + 1) == 0)
 		{
-			char *new_var = ft_strjoin3(key, "=", value ? value : "");
+			if (value)
+				new_var = ft_strjoin3(key, "=", value);
+			else
+				new_var = ft_strdup(key);
 			if (!new_var)
-			{
-				printf("Error: Memory allocation failed in ft_setenv\n");
 				return;
-			}
 			free(current->env_var);
 			current->env_var = new_var;
 			current->equal_sign = ft_strchr(current->env_var, '=');
@@ -171,27 +170,20 @@ void ft_setenv(t_env **env_list, char *key, char *value)
 			current->end_value = current->start_value ? current->env_var + ft_strlen(current->env_var) - 1 : NULL;
 			return;
 		}
-		prev = current;
 		current = current->next;
 	}
-	char *new_var = ft_strjoin3(key, "=", value ? value : "");
+	if (value)
+		new_var = ft_strjoin3(key, "=", value);
+	else
+		new_var = ft_strdup(key);
 	if (!new_var)
-	{
-		printf("Error: Memory allocation failed in ft_setenv\n");
 		return;
-	}
-	t_env *new_node = create_env_node(new_var);
+	new_node = create_env_node(new_var);
 	free(new_var);
 	if (!new_node)
-	{
-		printf("Error: Failed to create new node in ft_setenv\n");
 		return;
-	}
-
-	if (prev)
-		prev->next = new_node;
-	else
-		*env_list = new_node;
+	new_node->next = *env_list;
+	*env_list = new_node;
 }
 
 char *extract_key(char *arg, char *equal_sign)
