@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   minishell_philipp.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:59 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/25 20:00:46 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:09:39 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 int	main(void)
 {
-	int			i;
-	int			num_cmds;
-	int			num_tokens;
-	char		*input;
-	char		**words;
-	t_token		*tokens;
-	t_command	*cmds;
+	int				i;
+	int				num_cmds;
+	int				num_tokens;
+	char			*input;
+	char			**words;
+	t_token			*tokens;
+	t_token_type	type;
+	t_command		*cmds;
 
 	while (1)
 	{
@@ -28,24 +29,28 @@ int	main(void)
 		if (input)
 		{
 			num_tokens = count_tokens(input);
-			tokens = ft_malloc(num_tokens * sizeof(t_token));
 			words = custom_split(input);
-			i = 0;
+			i = 1;
 			num_cmds = 1;
+			type = assign_type(words[0]);
+			tokens = lstnew_token(words[0], type);
 			while (i < num_tokens)
 			{
-				if (!strcmp(words[i], "<"))
-					tokens[i] = assign_redir(words[i + 2], INRED);
-				else if (!strcmp(words[i], ">"))
-					tokens[i] = assign_redir(words[i + 2], OUTRED);
-				else
-					tokens[i] = assign_token(words[i]);
-				if (tokens[i].type == PIPE)
+				type = assign_type(words[i]);
+				if (!ft_strncmp(words[i], "<", ft_strlen(words[i])) || !ft_strncmp(words[i], ">", ft_strlen(words[i])))
+					i = i + 2;
+				if ((words[i][0] == '<' && words[i][1] != '<') || (words[i][0] == '>' && words[i][1] != '>'))
+					words[i]++;
+				lstadd_token(&tokens, lstnew_token(words[i], type));
+				if (!ft_strcmp(words[i], "|"))
 					num_cmds++;
 				i++;
 			}
 			cmds = ft_malloc(num_cmds * sizeof(t_command));
-			cmds = add_commands(cmds, num_tokens, tokens);
+			cmds->inred = NULL;
+			cmds->outred = NULL;
+			cmds->args = NULL;
+			cmds = add_commands(cmds, tokens);
 			start_debug_mode(words, num_tokens, tokens, num_cmds, cmds);
 			add_history(input);
 			free(input);

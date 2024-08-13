@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:27:06 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/25 19:56:27 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:03:35 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,15 @@ void	print_token(t_token *token, int i)
 	printf(",	value[%s]\n", token->value);
 }
 
-void	print_tokens(char **words, t_token *tokens)
+void	print_tokens(t_token *tokens)
 {
 	int	i;
 
 	i = 0;
-	while (words[i] != NULL)
+	while (tokens != NULL)
 	{
-		print_token(&tokens[i], i);
+		print_token(tokens, i);
+		tokens = tokens->next;
 		i++;
 	}
 }
@@ -116,7 +117,7 @@ void	start_debug_mode(char **words, int num_tokens, t_token *tokens, int num_cmd
 	printf("\nAFTER SPLIT:\n");
 	print_split(words);
 	printf("\nAFTER TOKENIZING:\n");
-	print_tokens(words, tokens);
+	print_tokens(tokens);
 	printf("\nAFTER ADDING COMMANDS:\n");
 	print_commands(num_cmds, cmds);
 }

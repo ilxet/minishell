@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/03 20:58:14 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:10:32 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,30 +57,29 @@ int	is_word(char *str)
 	return (1);
 }
 
-t_token assign_token(char *str)
+t_token_type assign_type(char *str)
 {
-	t_token	token;
+	t_token_type type;
 
-	token.value = str;
-	if (str[0] == ' ')
-		token.type = SPACE_T;
-	else if (!strncmp(str, "-", 1))
-		token.type = ARG;
+	if (!ft_strncmp(str, " ", 1))
+		type = SPACE_T;
+	else if (!ft_strncmp(str, "-", 1))
+		type = ARG;
+	else if (!ft_strncmp(str, "<", 1))
+		type = INRED;
+	else if (!ft_strncmp(str, ">", 1))
+		type = OUTRED;
 	else if (is_word(str))
-		token.type = WORD;
-	else if (!strcmp(str, "<"))
-		token.type = INRED;
-	else if (!strcmp(str, ">"))
-		token.type = OUTRED;
-	else if (!strcmp(str, "|"))
-		token.type = PIPE;
-	else if (!strncmp(str, "<<", 2) && strlen(str) > 2)
-		token.type = HDOC;
-	else if (!strcmp(str, ">>"))
-		token.type = APPEND;
+		type = WORD;
+	else if (!ft_strncmp(str, "|", ft_strlen(str)))
+		type = PIPE;
+	else if (!ft_strncmp(str, "<<", 2) && strlen(str) > 2)
+		type = HDOC;
+	else if (!ft_strncmp(str, ">>", ft_strlen(str)))
+		type = APPEND;
 	else
-		token.type = ERROR;
-	return (token);
+		type = ERROR;
+	return (type);
 }
 
 t_token assign_redir(char *str, t_token_type redir_type)
@@ -117,22 +116,23 @@ void	add_to_command(t_command *cmd, t_token *token)
 	}
 }
 
-t_command	*add_commands(t_command *cmds, int num_tokens, t_token *tokens)
+t_command	*add_commands(t_command *cmds, t_token *tokens)
 {
 	int	i;
 	int	cmd_i;
 
 	i = 0;
 	cmd_i = 0;
-	while (i < num_tokens)
+	while (tokens != NULL)
 	{
-		if (tokens[i].type == PIPE)
+		if (tokens->type == PIPE)
 			cmd_i++;
-		else if (tokens[i].type != SPACE_T
-			&& tokens[i].type != APPEND
-			&& tokens[i].type != HDOC
-			&& tokens[i].type != ERROR)
-			add_to_command(&cmds[cmd_i], &tokens[i]);
+		else if (tokens->type != SPACE_T
+			&& tokens->type != APPEND
+			&& tokens->type != HDOC
+			&& tokens->type != ERROR)
+			add_to_command(&cmds[cmd_i], tokens);
+		tokens = tokens->next;
 		i++;
 	}
 	return (cmds);

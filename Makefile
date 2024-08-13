@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+         #
+#    By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 17:15:13 by pschmunk          #+#    #+#              #
-#    Updated: 2024/08/06 16:03:51 by aadamik          ###   ########.fr        #
+#    Updated: 2024/08/06 19:04:05 by pschmunk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ RM = rm -rf
 
 MINISHELL = minishell
 
-MINISHELL_SRC =	./sources/minishell_alex.c		\
+MINISHELL_SRC =	./sources/minishell_philipp.c		\
 				./sources/executor/echo.c		\
 				./sources/executor/export.c		\
 				./sources/executor/pwd.c		\
