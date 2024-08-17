@@ -6,7 +6,7 @@
 #    By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 17:15:13 by pschmunk          #+#    #+#              #
-#    Updated: 2024/08/13 18:19:40 by pschmunk         ###   ########.fr        #
+#    Updated: 2024/08/14 14:42:42 by pschmunk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,13 +17,15 @@ RM = rm -rf
 
 MINISHELL = minishell
 
-MINISHELL_SRC =	./sources/minishell_philipp.c		\
+MINISHELL_SRC =	./sources/minishell.c			\
 				./sources/executor/echo.c		\
 				./sources/executor/export.c		\
 				./sources/executor/pwd.c		\
 				./sources/executor/unset.c		\
+				./sources/parser/parsing.c		\
 				./sources/parser/custom_split.c	\
 				./sources/parser/tokenizing.c	\
+				./sources/parser/heredoc.c		\
 				./sources/parser/list.c			\
 				./sources/utils/debug.c			\
 				./sources/utils/utils.c			\

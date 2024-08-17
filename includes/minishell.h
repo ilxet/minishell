@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/13 18:18:52 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:41:45 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 typedef enum e_token_type
 {
-	WORD,
+	COMMAND,
 	ARG,
 	NEWLINE_T,
 	SPACE_T,
@@ -101,10 +101,12 @@ void			lstadd_args(t_args **lst, t_args *new);
 void			lstadd_inred(t_inred **lst, t_inred *new);
 void			lstadd_outred(t_outred **lst, t_outred *new);
 t_command		*add_commands(t_command *cmds, t_token *tokens);
+t_command 		*parse(char *input);
 t_env			*create_node(char *env_var);
 t_env			*built_env_list(char *envp[]);
 void			free_env(t_env *head);
 void			add_to_env_list(t_env **env_list, const char *var);
+void			do_hdoc(t_token *token);
 
 //EXECUTOR
 void		ft_echo(char **args);

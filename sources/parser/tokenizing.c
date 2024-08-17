@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/13 18:10:32 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:49:19 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,18 @@ t_token_type assign_type(char *str)
 		type = SPACE_T;
 	else if (!ft_strncmp(str, "-", 1))
 		type = ARG;
+	else if (!ft_strncmp(str, "<<", 2) && strlen(str) > 2)
+		type = HDOC;
+	else if (!ft_strncmp(str, ">>", ft_strlen(str)))
+		type = APPEND;
 	else if (!ft_strncmp(str, "<", 1))
 		type = INRED;
 	else if (!ft_strncmp(str, ">", 1))
 		type = OUTRED;
 	else if (is_word(str))
-		type = WORD;
+		type = COMMAND;
 	else if (!ft_strncmp(str, "|", ft_strlen(str)))
 		type = PIPE;
-	else if (!ft_strncmp(str, "<<", 2) && strlen(str) > 2)
-		type = HDOC;
-	else if (!ft_strncmp(str, ">>", ft_strlen(str)))
-		type = APPEND;
 	else
 		type = ERROR;
 	return (type);
@@ -127,9 +127,10 @@ t_command	*add_commands(t_command *cmds, t_token *tokens)
 	{
 		if (tokens->type == PIPE)
 			cmd_i++;
+		else if (tokens->type == HDOC)
+			do_hdoc(tokens);
 		else if (tokens->type != SPACE_T
 			&& tokens->type != APPEND
-			&& tokens->type != HDOC
 			&& tokens->type != ERROR)
 			add_to_command(&cmds[cmd_i], tokens);
 		tokens = tokens->next;

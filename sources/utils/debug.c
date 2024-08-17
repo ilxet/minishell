@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:27:06 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/06 19:03:35 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:22:49 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_split(char **words)
 void	print_token(t_token *token, int i)
 {
 	printf("Token[%d], type", i);
-	if (token->type == WORD)
+	if (token->type == COMMAND)
 		printf("[WORD]");
 	else if (token->type == ARG)
 		printf("[ARG]");
