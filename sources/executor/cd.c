@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:56:09 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/13 12:14:43 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/13 18:26:37 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ int builtin_cd(char **args)
 	{
 		// If no argument is provided, change to HOME directory
 		path = getenv("HOME");
-		if (path == NULL) {
-			fprintf(stderr, "cd: HOME not set\n");
+		if (path == NULL) 
+		{
+			write(2, "cd: HOME not set\n", 16);
 			return 1;
 		}
 	}
@@ -36,7 +37,7 @@ int builtin_cd(char **args)
 		// Change to previous directory
 		path = getenv("OLDPWD");
 		if (path == NULL) {
-			fprintf(stderr, "cd: OLDPWD not set\n");
+			write(2, "cd: OLDPWD not set\n", 19);
 			return 1;
 		}
 	}
@@ -48,19 +49,19 @@ int builtin_cd(char **args)
 	// Get the current directory before changing
 	if (getcwd(current_dir, sizeof(current_dir)) == NULL)
 	{
-		perror("cd: getcwd() error");
+		write(2, "cd: getcwd() error\n", 19);
 		return 1;
 	}
 	// Attempt to change directory
 	if (chdir(path) != 0)
 	{
-		perror("cd: chdir() error");
+		write(2, "cd: chdir() error\n", 18);
 		return 1;
 	}
 	// Update PWD and OLDPWD environment variables
 	setenv("OLDPWD", current_dir, 1);
 	if (getcwd(current_dir, sizeof(current_dir)) == NULL) {
-		perror("cd: getcwd() error");
+		write(2, "cd: getcwd() error\n", 19);
 		return 1;
 	}
 	setenv("PWD", current_dir, 1);
