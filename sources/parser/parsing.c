@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:03:17 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/17 14:43:34 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/19 19:03:03 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ t_command *parse(char *input)
 	t_command	*cmds;
 	t_token		*tokens;
 
-	words = custom_split(input);
-	num_tokens = count_tokens(input);
+	words = custom_split(input, ' ', TOKEN);
+	num_tokens = count_tokens(input, ' ', TOKEN);
 	tokens = add_tokens(num_tokens, words);
 	num_cmds = count_cmds(tokens);
 	cmds = ft_malloc(num_cmds * sizeof(t_command));
@@ -65,6 +65,6 @@ t_command *parse(char *input)
 	cmds->outred = NULL;
 	cmds->args = NULL;
 	cmds = add_commands(cmds, tokens);
-	// start_debug_mode(words, num_tokens, tokens, num_cmds, cmds);
+	start_debug_mode(words, num_tokens, tokens, num_cmds, cmds);
 	return (cmds);
 }

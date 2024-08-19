@@ -6,11 +6,30 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:27:33 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/17 14:37:55 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:35:33 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	write_tmpfile(int *fd)
+{
+	char	buffer[1024];
+	ssize_t	n;
+	FILE	*tmp_file;
+
+	tmp_file = tmpfile();
+	if (tmp_file == NULL)
+	{
+		perror("tmpfile");
+		exit(EXIT_FAILURE);
+	}
+	while ((n = read(fd[0], buffer, sizeof(buffer))) > 0)
+		fwrite(buffer, 1, n, tmp_file);
+	close(fd[0]);
+	rewind(tmp_file);
+	fclose(tmp_file);
+}
 
 void	do_hdoc(t_token *token)
 {
@@ -37,4 +56,5 @@ void	do_hdoc(t_token *token)
 		free(input);
 	}
 	close(fd[1]);
+	write_tmpfile(fd);
 }

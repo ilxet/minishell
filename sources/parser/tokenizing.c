@@ -6,13 +6,13 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/14 14:49:19 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/19 19:09:44 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	count_tokens(char *str)
+int	count_tokens(char *str, char c, t_split_mode mode)
 {
 	int	i;
 	int	word_num;
@@ -25,10 +25,10 @@ int	count_tokens(char *str)
 	count_quotes = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] != ' ' && str[i + 1] == ' ')
+		if (str[i] != c && str[i + 1] == c)
 			space_num++;
-		if (str[i] != ' ' && str[i] != '"'
-			&& (str[i + 1] == ' ' || str[i + 1] == '\0') && !(count_quotes % 2))
+		if (str[i] != c && str[i] != '"'
+			&& (str[i + 1] == c || str[i + 1] == '\0') && !(count_quotes % 2))
 			word_num++;
 		if (str[i] == '"')
 		{
@@ -38,7 +38,9 @@ int	count_tokens(char *str)
 		}
 		i++;
 	}
-	return (word_num + space_num);
+	if (mode == TOKEN)
+		return (word_num + space_num);
+	return (word_num);
 }
 
 int	is_word(char *str)
@@ -67,7 +69,7 @@ t_token_type assign_type(char *str)
 		type = ARG;
 	else if (!ft_strncmp(str, "<<", 2) && strlen(str) > 2)
 		type = HDOC;
-	else if (!ft_strncmp(str, ">>", ft_strlen(str)))
+	else if (!ft_strncmp(str, ">>", ft_strlen(str)) && strlen(str) == 2)
 		type = APPEND;
 	else if (!ft_strncmp(str, "<", 1))
 		type = INRED;

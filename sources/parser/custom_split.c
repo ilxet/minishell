@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:36:33 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/07/02 21:38:06 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/19 19:03:25 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*create_word(char *str, int i, char c)
 	return (word);
 }
 
-char	*get_word(char *str, int token_id)
+char	*get_word(char *str, char c, int token_id, t_split_mode mode)
 {
 	int	i;
 	int	token_num;
@@ -61,9 +61,9 @@ char	*get_word(char *str, int token_id)
 	count_quotes = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == ' ' && str[i - 1] != ' ')
+		if (str[i] == c && str[i - 1] != c && mode == TOKEN)
 			token_num++;
-		if (str[i] != ' ' && (str[i - 1] == ' ' || i == 0)
+		if (str[i] != c && (str[i - 1] == c || i == 0)
 			&& !(count_quotes % 2))
 			token_num++;
 		if (str[i] == '"')
@@ -77,17 +77,17 @@ char	*get_word(char *str, int token_id)
 		i++;
 		return (create_word(str, i, '"'));
 	}
-	return (create_word(str, i, ' '));
+	return (create_word(str, i, c));
 }
 
-char	**custom_split(char *str)
+char	**custom_split(char *str, char c, t_split_mode mode)
 {
 	char	*null_ptr;
 	char	**words;
 	int		len;
 	int		i;
 
-	len = count_tokens(str);
+	len = count_tokens(str, c, mode);
 	words = (char **)ft_malloc((len + 1) * sizeof(char *));
 	null_ptr = (char *)ft_malloc(1 * sizeof(char));
 	null_ptr = NULL;
@@ -95,7 +95,7 @@ char	**custom_split(char *str)
 	i = 0;
 	while (i < len)
 	{
-		words[i] = get_word(str, i + 1);
+		words[i] = get_word(str, c, i + 1, mode);
 		i++;
 	}
 	return (words);

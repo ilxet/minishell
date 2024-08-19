@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/14 14:41:45 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/19 19:52:25 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "printf/libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 
 typedef enum e_token_type
 {
@@ -42,6 +43,12 @@ typedef enum e_token_type
 	HDOC,
 	ERROR,
 }	t_token_type;
+
+typedef	enum e_split_mode
+{
+	DEFAULT,
+	TOKEN
+}	t_split_mode;
 
 typedef struct s_token
 {
@@ -88,8 +95,8 @@ typedef struct s_env
 }	t_env;
 
 //PARSER
-char			**custom_split(char *str);
-int				count_tokens(char *str);
+char			**custom_split(char *str, char c, t_split_mode mode);
+int				count_tokens(char *str, char c, t_split_mode mode);
 t_token_type	assign_type(char *str);
 t_token 		assign_redir(char *str, t_token_type redir_type);
 t_token			*lstnew_token(void *content, t_token_type type);
@@ -107,6 +114,8 @@ t_env			*built_env_list(char *envp[]);
 void			free_env(t_env *head);
 void			add_to_env_list(t_env **env_list, const char *var);
 void			do_hdoc(t_token *token);
+char*			find_cmd_path(char *command);
+void			execute(char *cmd_path);
 
 //EXECUTOR
 void		ft_echo(char **args);
