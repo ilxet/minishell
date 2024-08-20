@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:27:06 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/14 14:22:49 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/19 20:04:56 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	print_command(t_command *cmd)
 		temp1 = temp1->next;
 		i++;
 	}
+	if (i == 0)
+		printf("(empty)\n");
 	i = 0;
 	printf("\nInput Redirections:\n");
 	while (cmd->inred != NULL)
@@ -86,6 +88,8 @@ void	print_command(t_command *cmd)
 		cmd->inred = cmd->inred->next;
 		i++;
 	}
+	if (i == 0)
+		printf("(empty)\n");
 	i = 0;
 	printf("\nOutput Redirections:\n");
 	while (cmd->outred != NULL)
@@ -94,6 +98,8 @@ void	print_command(t_command *cmd)
 		cmd->outred = cmd->outred->next;
 		i++;
 	}
+	if (i == 0)
+		printf("(empty)\n");
 }
 
 void	print_commands(int num_cmds, t_command *cmds)
@@ -120,4 +126,5 @@ void	start_debug_mode(char **words, int num_tokens, t_token *tokens, int num_cmd
 	print_tokens(tokens);
 	printf("\nAFTER ADDING COMMANDS:\n");
 	print_commands(num_cmds, cmds);
+	printf("###################################################################################\n\n");
 }
