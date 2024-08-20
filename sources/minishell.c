@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/08/14 14:20:53 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/17 14:50:00 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,9 @@ int	main(void)
 	while (1)
 	{
 		input = readline(PROMPT);
-		if (input)
-		{
-			cmds = parse(input);
-			add_history(input);
-			free(input);
-		}
-		else
-			printf("No input\n");
+		cmds = parse(input);
+		add_history(input);
+		free(input);
 	}
 	return (0);
 }

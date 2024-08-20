@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:56:09 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/13 18:26:37 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/14 16:19:22 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int builtin_cd(char **args)
 	}
 	// Update PWD and OLDPWD environment variables
 	setenv("OLDPWD", current_dir, 1);
-	if (getcwd(current_dir, sizeof(current_dir)) == NULL) {
+	if (getcwd(current_dir, sizeof(current_dir)) == NULL) 
+	{
 		write(2, "cd: getcwd() error\n", 19);
 		return 1;
 	}
