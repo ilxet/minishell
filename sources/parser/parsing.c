@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:03:17 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/19 19:03:03 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:40:20 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,28 @@ t_token	*add_tokens(int num_tokens, char **words)
 	t_token			*tokens;
 	int				i;
 
-	type = assign_type(words[0]);
-	tokens = lstnew_token(words[0], type);
-	i = 1;
+	// type = assign_type(words[0]);
+	// tokens = lstnew_token(words[0], type);
+	tokens = NULL;
+	i = 0;
 	while (i < num_tokens)
 	{
 		type = assign_type(words[i]);
 		if (!ft_strncmp(words[i], "<", ft_strlen(words[i])) || !ft_strncmp(words[i], ">", ft_strlen(words[i])))
 			i = i + 2;
+		if (ft_strcmp(words[i], "<<") == 0 && ft_strcmp(words[i + 1], " ") == 0)
+		{
+			i = i + 2;
+			words[i] = ft_strjoin(words[i - 2], words[i]);
+		}
 		if ((words[i][0] == '<' && words[i][1] != '<') || (words[i][0] == '>' && words[i][1] != '>'))
 			words[i]++;
-		lstadd_token(&tokens, lstnew_token(words[i], type));
+		if (tokens == NULL)
+		{
+			tokens = lstnew_token(words[i], type);
+		}
+		else
+			lstadd_token(&tokens, lstnew_token(words[i], type));
 		i++;
 	}
 	return (tokens);

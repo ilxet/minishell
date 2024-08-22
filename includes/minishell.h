@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/19 19:52:25 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:43:44 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void			free_env(t_env *head);
 void			add_to_env_list(t_env **env_list, const char *var);
 void			do_hdoc(t_token *token);
 char*			find_cmd_path(char *command);
-void			execute(char *cmd_path);
+void			execute(char *cmd_path, t_args *cmds, int num_args);
 
 //EXECUTOR
 void		ft_echo(char **args);

@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:26:32 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/19 19:53:50 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/22 15:40:09 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	execute(char *cmd_path)
+void	execute(char *cmd_path, t_args *cmds, int num_args)
 {
 	pid_t	pid;
 	int		status;
-	// int		i;
-	char	*args[] = {"ls", "-l", NULL};
+	int		i;
+	char	*args[num_args];
 
-	// i = 0;
-	// while (i < num_args)
-	// {
-	// 	args[i] = cmds->args->token->value;
-	// 	cmds->args = cmds->args->next;
-	// 	i++;
-	// }
+	i = 0;
+	while (cmds != NULL)
+	{
+		args[i] = cmds->token->value;
+		cmds = cmds->next;
+		i++;
+	}
 	pid = fork();
 	if (pid < 0)
 	{
