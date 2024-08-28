@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:26:32 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/22 15:40:09 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/28 19:16:59 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 void	execute(char *cmd_path, t_args *cmds, int num_args)
 {
 	pid_t	pid;
-	int		status;
 	int		i;
 	char	*args[num_args];
 
+	if (cmd_path == NULL)
+		return ;
 	i = 0;
 	while (cmds != NULL)
 	{
@@ -35,7 +36,7 @@ void	execute(char *cmd_path, t_args *cmds, int num_args)
 	else if (pid == 0)
 		execv(cmd_path, args);
 	else
-		waitpid(pid, &status, 0);
+		waitpid(pid, NULL, 0);
 }
 
 char	*find_cmd_path(char *command)
@@ -47,7 +48,7 @@ char	*find_cmd_path(char *command)
 	char	**dirs;
 
 	path = getenv("PATH");
-	num_dirs = count_tokens(path, ':', DEFAULT);
+	num_dirs = count_words(path, ':', DEFAULT);
 	dirs = custom_split(path, ':', DEFAULT);
 	i = 0;
 	while (dirs[i])
