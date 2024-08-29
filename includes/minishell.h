@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kambes <kambes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/21 17:43:44 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:43:28 by kambes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void			do_hdoc(t_token *token);
 char*			find_cmd_path(char *command);
 void			execute(char *cmd_path, t_args *cmds, int num_args);
 
+
 //EXECUTOR
 void		ft_echo(char **args);
 void		ft_pwd(void);
@@ -141,6 +142,9 @@ int				count_env_vars(t_env *env_list);
 void			bubble_sort_env_vars(t_env **env_array, int count);
 void			ft_setenv(t_env **env_list, char *key, char *value);
 void			swap_env_vars(t_env **a, t_env **b);
+void			exec_command(t_command *command, t_list env_list);
+int				forking(t_command *command, t_list env_list, int process_num);
+char			*get_path(char *command, t_list env_list);
 
 //UTILS
 char		*ft_strjoin3(char *s1,char *s2, char *s3);
