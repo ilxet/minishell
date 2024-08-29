@@ -1,56 +1,24 @@
 #include "../../includes/minishell.h"
-Instead, we'll use the stat function, which is on your list of allowed functions. Here's a revised version of the function:
-
-
-Revised get_path Function Without access
-Click to open code
-Let's go through the key changes and explanations:
-
-We've replaced access(path, F_OK) with stat(path, &st).
-After calling stat, we check three conditions:
-stat(path, &st) == 0: This checks if the stat call was successful (i.e., the file exists).
-S_ISREG(st.st_mode): This checks if the file is a regular file (not a directory or other special file).
-st.st_mode & S_IXUSR: This checks if the file has execute permissions for the user.
-We've simplified the cleanup process by moving it into two places:
-When a valid path is found, we clean up and return the path.
-If no valid path is found, we clean up at the end before returning NULL.
-We're using ft_strjoin3 instead of two separate ft_strjoin calls. You'll need to implement this function if you haven't already. It should concatenate three strings.
-We've removed the separate j variable and instead use a for loop for cleanup, which is more concise.
-This revised version of get_path should work with your allowed functions list. It checks if each potential path exists, is a regular file, and has execute permissions, which is equivalent to what access(path, F_OK) was doing in the original function, but with a bit more detail.
-
-Remember to include the necessary header for struct stat:
-
-c
-
-Copy
 #include <sys/stat.h>
-Also, make sure you have implemented or have access to ft_strjoin3. If not, you can implement it like this:
 
+char *ft_strjoin3(char *s1, char *s2, char *s3)
+{
+    char *result;
+    size_t len1, len2, len3;
 
-ft_strjoin3 Function
-Click to open code
-This implementation assumes you have ft_strlen, ft_strlcpy, and ft_strlcat functions available. If you don't, you may need to implement these as well or modify the function to use standard string operations.
-
-Copy
-Retry
-
-
-Claude does not have the ability to run the code it generates yet.
-Claude can make mistakes. Please double-check responses.
-
-
-
-
-
-
-3.5 Sonnet
-Tip:
-Long chats cause you to reach your usage limits faster.
-Start a new chat 
-
-Revised get_path Function Without access
-
-#include <sys/stat.h>
+    if (!s1 || !s2 || !s3)
+        return (NULL);
+    len1 = ft_strlen(s1);
+    len2 = ft_strlen(s2);
+    len3 = ft_strlen(s3);
+    result = (char *)malloc(sizeof(char) * (len1 + len2 + len3 + 1));
+    if (!result)
+        return (NULL);
+    ft_strlcpy(result, s1, len1 + 1);
+    ft_strlcat(result, s2, len1 + len2 + 1);
+    ft_strlcat(result, s3, len1 + len2 + len3 + 1);
+    return (result);
+}
 
 char *get_path(char *command, t_list env_list)
 {
@@ -58,8 +26,7 @@ char *get_path(char *command, t_list env_list)
     char *path;
     char *path_var;
     char **path_dirs;
-    int i;
-    struct stat st;
+    int i, fd;
 
     env = env_list;
     while (env)
@@ -79,8 +46,10 @@ char *get_path(char *command, t_list env_list)
     while (path_dirs[i])
     {
         path = ft_strjoin3(path_dirs[i], "/", command);
-        if (stat(path, &st) == 0 && S_ISREG(st.st_mode) && (st.st_mode & S_IXUSR))
+        fd = open(path, O_RDONLY);
+        if (fd != -1)
         {
+            close(fd);
             // Clean up and return the valid path
             for (int j = 0; path_dirs[j]; j++)
                 free(path_dirs[j]);
