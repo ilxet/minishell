@@ -6,7 +6,7 @@
 /*   By: kambes <kambes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/29 20:08:33 by kambes           ###   ########.fr       */
+/*   Updated: 2024/08/31 19:02:12 by kambes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ void			exec_command(t_command *command, t_list env_list);
 int				forking(t_command *command, t_list env_list, int process_num);
 char			*get_path(char *command, t_list env_list);
 char			*ft_strjoin3(char *s1, char *s2, char *s3);
+t_list			get_env_list(char **envp);
 
 //UTILS
 char		*ft_strjoin3(char *s1,char *s2, char *s3);

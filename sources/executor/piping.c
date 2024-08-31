@@ -1,6 +1,24 @@
 #include "../../includes/minishell.h"
 #include <sys/stat.h>
 
+t_list get_env_list(char **envp)
+{
+	t_list env_list;
+	t_env *env;
+	int i;
+
+	env_list = NULL;
+	i = 0;
+	while (envp[i])
+	{
+		env = create_node(envp[i]);
+		ft_lstadd_back(&env_list, ft_lstnew(env));
+		i++;
+	}
+	return (env_list); 
+}
+
+
 char *ft_strjoin3(char *s1, char *s2, char *s3)
 {
     char *result;
