@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 17:44:29 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/31 19:55:12 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 20:33:17 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,28 @@ void	free_env(t_env *head)
 
 void add_to_env_list(t_env **env_list, char *var)
 {
-    t_env *new_node = create_env_node(var);
+    t_env *new_node;
+	
+	new_node = create_env_node(var);
     if (new_node)
     {
         new_node->next = *env_list;
         *env_list = new_node;
     }
+}
+
+char	*get_env(t_env **env_list, char *str)
+{
+	int		i;
+	t_env	*env_list_cpy;
+
+	i = 0;
+	env_list_cpy = *env_list;
+	while (env_list_cpy)
+	{
+		if (ft_strcmp(str, env_list_cpy->start_key))
+			return (env_list_cpy->start_value);
+		env_list_cpy = env_list_cpy->next;
+	}
+	return (NULL);
 }

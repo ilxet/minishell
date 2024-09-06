@@ -6,7 +6,7 @@
 #    By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 17:15:13 by pschmunk          #+#    #+#              #
-#    Updated: 2024/08/31 19:50:05 by pschmunk         ###   ########.fr        #
+#    Updated: 2024/09/06 19:12:35 by pschmunk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ MINISHELL_SRC =	./sources/minishell.c				\
 				./sources/executor/export.c			\
 				./sources/executor/pwd.c			\
 				./sources/executor/unset.c			\
-				./sources/executor/simple_exec.c	\
 				./sources/executor/piping.c			\
 				./sources/parser/env.c				\
 				./sources/parser/parser.c			\

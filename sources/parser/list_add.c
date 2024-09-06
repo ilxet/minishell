@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:11:17 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/28 19:11:55 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 19:42:34 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,23 @@ void	lstadd_inred(t_inred **lst, t_inred *new)
 void	lstadd_outred(t_outred **lst, t_outred *new)
 {
 	t_outred	*curr;
+
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	curr = *lst;
+	while (curr->next != NULL)
+	{
+		curr = curr->next;
+	}
+	curr->next = new;
+}
+
+void	lstadd_env(t_env **lst, t_env *new)
+{
+	t_env	*curr;
 
 	if (*lst == NULL)
 	{

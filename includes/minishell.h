@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 18:37:52 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 20:33:36 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,11 @@ void			lstadd_token(t_token **lst, t_token *new);
 void			lstadd_args(t_args **lst, t_args *new);
 void			lstadd_inred(t_inred **lst, t_inred *new);
 void			lstadd_outred(t_outred **lst, t_outred *new);
-t_command		*add_commands(t_command *cmds, t_token *tokens);
-t_command 		*parse(char *input);
+t_command		*add_commands(t_command *cmds, t_token *tokens, t_env **env_list);
+t_command 		*parse(char *input, t_env **env_list);
 t_env			*create_node(char *env_var);
 t_env			*built_env_list(char *envp[]);
+char			*get_env(t_env **env_list, char *str);
 void			free_env(t_env *head);
 void			add_to_env_list(t_env **env_list, char *var);
 void			do_hdoc(t_token *token);

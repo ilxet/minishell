@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 18:40:17 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 20:10:46 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_token_type	assign_type(char *str)
 		type = SPACE_T;
 	else if (ft_strchr(str, '=') != NULL)
 		type = ENV;
+	else if (ft_strchr(str, '$') != NULL)
+		type = DOLLAR;
 	else if (!ft_strncmp(str, "-", 1))
 		type = ARG;
 	else if (!ft_strncmp(str, "<<", 2))
@@ -89,7 +91,7 @@ void	add_to_command(t_command *cmd, t_token *token)
 	}
 }
 
-t_command	*add_commands(t_command *cmds, t_token *tokens)
+t_command	*add_commands(t_command *cmds, t_token *tokens, t_env **env_list)
 {
 	int	i;
 	int	cmd_i;
@@ -102,9 +104,10 @@ t_command	*add_commands(t_command *cmds, t_token *tokens)
 			cmd_i++;
 		else if (tokens->type == HDOC)
 			do_hdoc(tokens);
+		else if (tokens->type == ENV)
+			add_to_env_list(env_list, tokens->value);
 		else if (tokens->type != SPACE_T
 			&& tokens->type != APPEND
-			&& tokens->type != ENV
 			&& tokens->type != ERROR)
 			add_to_command(&cmds[cmd_i], tokens);
 		tokens = tokens->next;
