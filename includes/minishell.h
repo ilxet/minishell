@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 18:37:52 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 19:56:23 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void			bubble_sort_env_vars(t_env **env_array, int count);
 void			ft_setenv(t_env **env_list, char *key, char *value);
 void			swap_env_vars(t_env **a, t_env **b);
 char 			*extract_key(char *arg, char *equal_sign);
+int				builtin_cd(char **args);
 void			ft_echo(char **args);
 void			ft_pwd(void);
 int				ft_check_key(char *key);
@@ -150,8 +151,8 @@ int				count_env_vars(t_env *env_list);
 void			bubble_sort_env_vars(t_env **env_array, int count);
 void			ft_setenv(t_env **env_list, char *key, char *value);
 void			swap_env_vars(t_env **a, t_env **b);
-void			exec_command(t_command *command);
-int				forking(t_command *command, int process_num);
+int				exec_command(t_command *command, t_env *env_list);
+int				forking(t_command *command, int process_num, t_env *env_list);
 char			*get_path(char *command, t_env *env_list);
 
 //UTILS
