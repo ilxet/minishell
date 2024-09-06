@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/21 17:43:44 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/31 20:23:15 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ typedef	enum e_split_mode
 	TOKEN
 }	t_split_mode;
 
+typedef enum e_malloc_mode
+{
+	EXIT,
+	R_NULL
+}	t_malloc_mode;
+
 typedef struct s_token
 {
 	char			*value;
@@ -81,6 +87,7 @@ typedef struct s_command
 	t_inred		*inred;
 	t_outred	*outred;
 	t_args		*args;
+	int			pipe_num;
 }	t_command;
 
 typedef struct s_env
@@ -96,7 +103,7 @@ typedef struct s_env
 
 //PARSER
 char			**custom_split(char *str, char c, t_split_mode mode);
-int				count_tokens(char *str, char c, t_split_mode mode);
+int				count_words(char *str, char c, t_split_mode mode);
 t_token_type	assign_type(char *str);
 t_token 		assign_redir(char *str, t_token_type redir_type);
 t_token			*lstnew_token(void *content, t_token_type type);
@@ -112,24 +119,13 @@ t_command 		*parse(char *input);
 t_env			*create_node(char *env_var);
 t_env			*built_env_list(char *envp[]);
 void			free_env(t_env *head);
-void			add_to_env_list(t_env **env_list, const char *var);
+void			add_to_env_list(t_env **env_list, char *var);
 void			do_hdoc(t_token *token);
 char*			find_cmd_path(char *command);
 void			execute(char *cmd_path, t_args *cmds, int num_args);
+void			signal_handler(int signum);
 
 //EXECUTOR
-void		ft_echo(char **args);
-void		ft_pwd(void);
-int			ft_check_key(char *key);
-void		ft_unsetenv(t_env **env_list, char *key);
-int			ft_unset(t_env **env_list, char **args);
-int			ft_export(t_env **env_list, char **args);
-t_env		*create_env_node(char *var);
-int			count_env_vars(t_env *env_list);
-void		bubble_sort_env_vars(t_env **env_array, int count);
-void		ft_setenv(t_env **env_list, char *key, char *value);
-void		swap_env_vars(t_env **a, t_env **b);
-char 		*extract_key(char *arg, char *equal_sign);
 void			ft_echo(char **args);
 void			ft_pwd(void);
 int				ft_check_key(char *key);
@@ -141,15 +137,25 @@ int				count_env_vars(t_env *env_list);
 void			bubble_sort_env_vars(t_env **env_array, int count);
 void			ft_setenv(t_env **env_list, char *key, char *value);
 void			swap_env_vars(t_env **a, t_env **b);
+char 			*extract_key(char *arg, char *equal_sign);
+void			ft_echo(char **args);
+void			ft_pwd(void);
+int				ft_check_key(char *key);
+void			ft_unsetenv(t_env **env_list, char *key);
+int				ft_unset(t_env **env_list, char **args);
+int				ft_export(t_env **env_list, char **args);
+t_env			*create_env_node(char *var);
+int				count_env_vars(t_env *env_list);
+void			bubble_sort_env_vars(t_env **env_array, int count);
+void			ft_setenv(t_env **env_list, char *key, char *value);
+void			swap_env_vars(t_env **a, t_env **b);
+void			exec_command(t_command *command);
+int				forking(t_command *command, int process_num);
+char			*get_path(char *command, t_env *env_list);
 
 //UTILS
-char		*ft_strjoin3(char *s1,char *s2, char *s3);
-void		*ft_malloc(size_t bytes);
-int			print_error(char *arg);
-void		print_env(t_env *head);
-void		print_sorted_env_vars(t_env *env_list);
-void		start_debug_mode(char **words, int num_tokens, t_token *tokens, int num_cmds, t_command *cmds);
-void			*ft_malloc(size_t bytes);
+char			*ft_strjoin3(char *s1,char *s2, char *s3);
+void			*ft_malloc(size_t bytes, t_malloc_mode mode);
 int				print_error(char *arg);
 void			print_env(t_env *head);
 void			print_sorted_env_vars(t_env *env_list);

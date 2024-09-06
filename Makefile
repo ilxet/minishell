@@ -6,7 +6,7 @@
 #    By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 17:15:13 by pschmunk          #+#    #+#              #
-#    Updated: 2024/08/19 18:31:28 by pschmunk         ###   ########.fr        #
+#    Updated: 2024/08/31 19:50:05 by pschmunk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,19 +17,23 @@ RM = rm -rf
 
 MINISHELL = minishell
 
-MINISHELL_SRC =	./sources/minishell.c			\
-				./sources/executor/echo.c		\
-				./sources/executor/export.c		\
-				./sources/executor/pwd.c		\
-				./sources/executor/unset.c		\
-				./sources/parser/parsing.c		\
-				./sources/parser/custom_split.c	\
-				./sources/parser/tokenizing.c	\
-				./sources/parser/heredoc.c		\
-				./sources/parser/list.c			\
-				./sources/parser/test.c			\
-				./sources/utils/debug.c			\
-				./sources/utils/utils.c			\
+MINISHELL_SRC =	./sources/minishell.c				\
+				./sources/executor/echo.c			\
+				./sources/executor/export.c			\
+				./sources/executor/pwd.c			\
+				./sources/executor/unset.c			\
+				./sources/executor/simple_exec.c	\
+				./sources/executor/piping.c			\
+				./sources/parser/env.c				\
+				./sources/parser/parser.c			\
+				./sources/parser/custom_split.c		\
+				./sources/parser/tokenizer.c		\
+				./sources/parser/heredoc.c			\
+				./sources/parser/list_new.c			\
+				./sources/parser/list_add.c			\
+				./sources/signals/signal_handling.c	\
+				./sources/utils/debug.c				\
+				./sources/utils/utils.c				\
 
 MINISHELL_OBJ = $(MINISHELL_SRC:.c=.o)
 

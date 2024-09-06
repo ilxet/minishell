@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:27:06 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/19 20:04:56 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/26 19:47:31 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print_token(t_token *token, int i)
 {
 	printf("Token[%d], type", i);
 	if (token->type == COMMAND)
-		printf("[WORD]");
+		printf("[COMMAND]");
 	else if (token->type == ARG)
 		printf("[ARG]");
 	else if (token->type == NEWLINE_T)

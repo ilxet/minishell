@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:27:33 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/19 16:35:33 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/08/28 20:13:22 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,12 @@ void	write_tmpfile(int *fd)
 		perror("tmpfile");
 		exit(EXIT_FAILURE);
 	}
-	while ((n = read(fd[0], buffer, sizeof(buffer))) > 0)
+	n = 1;
+	while (n > 0)
+	{
+		n = read(fd[0], buffer, sizeof(buffer));
 		fwrite(buffer, 1, n, tmp_file);
+	}
 	close(fd[0]);
 	rewind(tmp_file);
 	fclose(tmp_file);

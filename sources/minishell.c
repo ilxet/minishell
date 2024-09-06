@@ -6,35 +6,38 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/08/22 15:41:48 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:30:11 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
-	char			*input;
-	t_command		*cmds;
-	// char			*command;
-	// int				i;
-	// t_args			*cmds_copy;
+	char		*input;
+	t_command	*cmds;
+	t_env		*env_list;
 
+	(void)ac;
+	(void)av;
+	env_list = built_env_list(env);
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		input = readline(PROMPT);
-		cmds = parse(input);
-		// command = cmds->args->token->value;
-		// cmds_copy = cmds->args;
-		// i = 0;
-		// while (cmds->args != NULL)
-		// {
-		// 	i++;
-		// 	cmds->args = cmds->args->next;
-		// }
-		add_history(input);
-		// execute(find_cmd_path(command), cmds_copy, i);
+		if (input != NULL)
+		{
+			cmds = parse(input);
+			add_history(input);
+			forking(cmds, (cmds->pipe_num + 1));
+		}
+		else
+		{
+			printf("exit\n");
+			return (0);
+		}
 		free(input);
 	}
 	return (0);

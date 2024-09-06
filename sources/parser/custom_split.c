@@ -6,11 +6,45 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:36:33 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/19 19:03:25 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:30:28 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	count_words(char *str, char c, t_split_mode mode)
+{
+	int	i;
+	int	word_num;
+	int	space_num;
+	int	quotes_num;
+
+	i = 0;
+	word_num = 0;
+	space_num = 0;
+	quotes_num = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] != c && str[i + 1] == c && !(quotes_num % 2))
+			space_num++;
+		if (str[i] != c && str[i] != '"'
+			&& (str[i + 1] == c || str[i + 1] == '\0') && !(quotes_num % 2))
+			word_num++;
+		if (str[i] == '"')
+		{
+			quotes_num++;
+			if (!(quotes_num % 2))
+			{
+				space_num++;
+				word_num++;
+			}
+		}
+		i++;
+	}
+	if (mode == TOKEN)
+		return (word_num + space_num);
+	return (word_num);
+}
 
 int	word_len(char *str, int word_index, char c)
 {
@@ -32,13 +66,13 @@ char	*create_word(char *str, int i, char c)
 
 	if (str[i] == ' ')
 	{
-		word = (char *)ft_malloc(2 * sizeof(char));
+		word = (char *)ft_malloc(2 * sizeof(char), R_NULL);
 		word[0] = ' ';
 		word[1] = '\0';
 		return (word);
 	}
 	len = word_len(str, i, c);
-	word = (char *)ft_malloc((len + 1) * sizeof(char));
+	word = (char *)ft_malloc((len + 1) * sizeof(char), R_NULL);
 	word[len] = '\0';
 	len = 0;
 	while (str[i] != '\0' && str[i] != c)
@@ -61,7 +95,7 @@ char	*get_word(char *str, char c, int token_id, t_split_mode mode)
 	count_quotes = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == c && str[i - 1] != c && mode == TOKEN)
+		if (str[i] == c && str[i - 1] != c && mode == TOKEN && !(count_quotes % 2))
 			token_num++;
 		if (str[i] != c && (str[i - 1] == c || i == 0)
 			&& !(count_quotes % 2))
@@ -87,9 +121,9 @@ char	**custom_split(char *str, char c, t_split_mode mode)
 	int		len;
 	int		i;
 
-	len = count_tokens(str, c, mode);
-	words = (char **)ft_malloc((len + 1) * sizeof(char *));
-	null_ptr = (char *)ft_malloc(1 * sizeof(char));
+	len = count_words(str, c, mode);
+	words = (char **)ft_malloc((len + 1) * sizeof(char *), R_NULL);
+	null_ptr = (char *)ft_malloc(1 * sizeof(char), R_NULL);
 	null_ptr = NULL;
 	words[len] = null_ptr;
 	i = 0;

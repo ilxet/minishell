@@ -3,22 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 20:37:16 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/06 18:51:08 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/08/29 21:05:30 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	*ft_malloc(size_t bytes)
+void	*ft_malloc(size_t bytes, t_malloc_mode mode)
 {
 	void	*ptr;
 
 	ptr = malloc(bytes);
 	if (!ptr)
-		return (NULL);
+	{
+		if (mode == EXIT)
+			exit(EXIT_FAILURE);
+		else if (mode == R_NULL)
+			return (NULL);
+	}
 	return (ptr);
 }
 
