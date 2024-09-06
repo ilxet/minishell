@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/06 20:37:33 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 20:59:11 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ int	main(int ac, char **av, char **env)
 		{
 			cmds = parse(input, &env_list);
 			add_history(input);
-			forking(cmds, (cmds->pipe_num + 1));
-			// print_env(env_list);
+			forking(cmds, (cmds->pipe_num + 1), env_list);
 		}
 		else
 		{

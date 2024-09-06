@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   piping.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 19:47:32 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 18:51:33 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 20:13:28 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*find_cmd_path(char *command)
 	return (NULL);
 }
 
-void exec_command(t_command *command)
+int exec_command(t_command *command, t_env *env_list)
 {
 	t_inred *inred;
 	t_outred *outred;
@@ -70,7 +70,7 @@ void exec_command(t_command *command)
 		if (in_fd == -1)
 		{
 			write(2, "error: open\n", 12);
-			exit(EXIT_FAILURE);
+			return (1);
 		}
 		dup2(in_fd, STDIN_FILENO);
 		close(in_fd);
@@ -84,7 +84,7 @@ void exec_command(t_command *command)
 		if (out_fd == -1)
 		{
 			write(2, "error: open\n", 12);
-			exit(EXIT_FAILURE);
+			return (1);
 		}
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
@@ -101,21 +101,32 @@ void exec_command(t_command *command)
 		i++;
 	}
 	argv[i] = null_ptr;
+	if (ft_strcmp(argv[0], "cd") == 0)
+		return (builtin_cd(argv));
+	else if (ft_strcmp(argv[0], "echo") == 0)
+		return (ft_echo(argv), 0);
+	else if (ft_strcmp(argv[0], "export") == 0)
+		return (ft_export(&env_list, argv), 0);
+	else if (ft_strcmp(argv[0], "pwd") == 0)
+		return (ft_pwd(), 0);
+	else if (ft_strcmp(argv[0], "unset") == 0)
+		return (ft_unset(&env_list, argv), 0);
 	path = find_cmd_path(argv[0]);
 	if (path)
 	{
 		execve(path, argv, NULL);
+		return (0);
 	}
 	else
 	{
 		free(path);
 		free(argv);
 		write(2, "error: command not found\n", 25);
-		exit(EXIT_FAILURE);
+		return (1);
 	}
 }
 
-int forking(t_command *cmds, int process_num)
+int forking(t_command *cmds, int process_num, t_env *env_list)
 {
 	int pipes[process_num -1][2];
 	int i;
@@ -157,7 +168,7 @@ int forking(t_command *cmds, int process_num)
                 close(pipes[j][1]);
 				j++;
             }
-            exec_command(&cmds[i]);
+            exec_command(&cmds[i], env_list);
             // exit(EXIT_FAILURE);  // In case exec_command returns
 			// break ;
 		}

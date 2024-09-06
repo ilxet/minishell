@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:56:09 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/14 16:19:22 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/09/06 19:48:35 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <../includes/minishell.h>
+#include "../../includes/minishell.h"
 
 #define MAX_PATH 1024
 

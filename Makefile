@@ -6,7 +6,7 @@
 #    By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 17:15:13 by pschmunk          #+#    #+#              #
-#    Updated: 2024/09/06 19:12:35 by pschmunk         ###   ########.fr        #
+#    Updated: 2024/09/06 20:59:22 by pschmunk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ RM = rm -rf
 MINISHELL = minishell
 
 MINISHELL_SRC =	./sources/minishell.c				\
+				./sources/executor/cd.c				\
 				./sources/executor/echo.c			\
 				./sources/executor/export.c			\
 				./sources/executor/pwd.c			\
