@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:10:49 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/09 16:28:17 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/09/06 20:32:02 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,13 +202,14 @@ char *extract_key(char *arg, char *equal_sign)
 	return key;
 }
 
-int ft_export(t_env **env_list, char **args)
+int	ft_export(t_env **env_list, char **args)
 {
-	int i;
-	int exit_status;
-	char *equal_sign;
-	char *arg_copy;
-	char *key;
+	int		i;
+	int		exit_status;
+	char	*equal_sign;
+	char	*arg_copy;
+	char	*key;
+	char	*value;
 
 	i = 1;
 	exit_status = 0;
@@ -217,49 +218,43 @@ int ft_export(t_env **env_list, char **args)
 		print_sorted_env_vars(*env_list);
 		return (0);
 	}
-
 	while (args[i])
 	{
 		arg_copy = ft_strdup(args[i]);
 		if (!arg_copy)
 		{
-			printf("Error: Memory allocation failed in ft_export\n");
+			ft_putstr_fd("Error: Memory allocation failed in ft_export\n", 2);
 			return (1);
 		}
-		
 		equal_sign = ft_strchr(arg_copy, '=');
 		if (equal_sign)
 		{
-			if (equal_sign == arg_copy)
-			{
-				exit_status = print_error(arg_copy);
-				free(arg_copy);
-				i++;
-				continue;
-			}
 			*equal_sign = '\0';
-		}
-		key = arg_copy;
-		if (ft_check_key(key))
-		{
-			if (equal_sign)
+			key = arg_copy;
+			value = equal_sign + 1;
+			if (ft_check_key(key))
 			{
-				*equal_sign = '=';
-				ft_setenv(env_list, key, equal_sign + 1);
+				ft_setenv(env_list, key, value);
 			}
 			else
 			{
-				ft_setenv(env_list, key, NULL);
+				exit_status = print_error(args[i]);
 			}
 		}
 		else
 		{
-			if (equal_sign)
-				*equal_sign = '=';
-			exit_status = print_error(key);
+			if (ft_check_key(arg_copy))
+			{
+				ft_setenv(env_list, arg_copy, NULL);
+			}
+			else
+			{
+				exit_status = print_error(args[i]);
+			}
 		}
 		free(arg_copy);
 		i++;
 	}
 	return (exit_status);
 }
+
