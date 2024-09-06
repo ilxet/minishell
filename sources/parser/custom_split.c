@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:36:33 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/04 17:30:28 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:18:55 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	count_words(char *str, char c, t_split_mode mode)
 			quotes_num++;
 			if (!(quotes_num % 2))
 			{
-				space_num++;
+				if (str[i + 1] != '\0')
+					space_num++;
 				word_num++;
 			}
 		}

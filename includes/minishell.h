@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/31 20:23:15 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:37:52 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef enum e_token_type
 	OUTRED,
 	APPEND,
 	HDOC,
+	ENV,
 	ERROR,
 }	t_token_type;
 

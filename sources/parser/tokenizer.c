@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/08/29 21:24:40 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:40:17 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ t_token_type	assign_type(char *str)
 
 	if (!ft_strncmp(str, " ", 1))
 		type = SPACE_T;
+	else if (ft_strchr(str, '=') != NULL)
+		type = ENV;
 	else if (!ft_strncmp(str, "-", 1))
 		type = ARG;
 	else if (!ft_strncmp(str, "<<", 2))
@@ -49,7 +51,7 @@ t_token_type	assign_type(char *str)
 	else if (!ft_strncmp(str, "|", ft_strlen(str)))
 		type = PIPE;
 	else
-		type = ERROR;
+		type = COMMAND;
 	return (type);
 }
 
@@ -102,6 +104,7 @@ t_command	*add_commands(t_command *cmds, t_token *tokens)
 			do_hdoc(tokens);
 		else if (tokens->type != SPACE_T
 			&& tokens->type != APPEND
+			&& tokens->type != ENV
 			&& tokens->type != ERROR)
 			add_to_command(&cmds[cmd_i], tokens);
 		tokens = tokens->next;
