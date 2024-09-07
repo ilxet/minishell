@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:10:49 by aadamik           #+#    #+#             */
-/*   Updated: 2024/09/06 20:32:02 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/09/07 18:26:29 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,10 @@ void	print_env_var(t_env *env)
 			value_length = env->end_value - env->start_value + 1;
 			write(1, env->start_value, value_length);
 		}
-		write(1, "\"", 2);
+		write(1, "\"", 1);
 	}
-	write(1, "\n", 2);
+	write(1, "\n", 1);
 }
-
 
 void	print_sorted_env_vars(t_env *env_list)
 {
@@ -153,7 +152,7 @@ void	ft_setenv(t_env **env_list, char *key, char *value)
 	current = *env_list;
 	while (current)
 	{
-		if (ft_strncmp(current->start_key, key, current->end_key - current->start_key + 1) == 0)
+		if (ft_strcmp(current->start_key, key) == 0)
 		{
 			if (value)
 				new_var = ft_strjoin3(key, "=", value);
@@ -165,9 +164,18 @@ void	ft_setenv(t_env **env_list, char *key, char *value)
 			current->env_var = new_var;
 			current->equal_sign = ft_strchr(current->env_var, '=');
 			current->start_key = current->env_var;
-			current->end_key = current->equal_sign ? current->equal_sign - 1 : current->env_var + ft_strlen(current->env_var) - 1;
-			current->start_value = current->equal_sign ? current->equal_sign + 1 : NULL;
-			current->end_value = current->start_value ? current->env_var + ft_strlen(current->env_var) - 1 : NULL;
+			if (current->equal_sign)
+				current->end_key = current->equal_sign - 1;
+			else
+				current->end_key = current->env_var + ft_strlen(current->env_var) - 1;
+			if (current->equal_sign)
+				current->start_value = current->equal_sign + 1;
+			else
+				current->start_value = NULL;
+			if (current->start_value)
+				current->end_value = current->env_var + ft_strlen(current->env_var) - 1;
+			else
+				current->end_value = NULL;
 			return;
 		}
 		current = current->next;
@@ -207,54 +215,45 @@ int	ft_export(t_env **env_list, char **args)
 	int		i;
 	int		exit_status;
 	char	*equal_sign;
-	char	*arg_copy;
-	char	*key;
-	char	*value;
 
 	i = 1;
 	exit_status = 0;
 	if (!args[1])
 	{
 		print_sorted_env_vars(*env_list);
+		printf("error check, args[1]= %s \n", args[1]);
 		return (0);
 	}
 	while (args[i])
 	{
-		arg_copy = ft_strdup(args[i]);
-		if (!arg_copy)
-		{
-			ft_putstr_fd("Error: Memory allocation failed in ft_export\n", 2);
-			return (1);
-		}
-		equal_sign = ft_strchr(arg_copy, '=');
+		equal_sign = ft_strchr(args[i], '=');
 		if (equal_sign)
 		{
 			*equal_sign = '\0';
-			key = arg_copy;
-			value = equal_sign + 1;
-			if (ft_check_key(key))
+			if (ft_check_key(args[i]))
 			{
-				ft_setenv(env_list, key, value);
+				ft_setenv(env_list, args[i], equal_sign + 1);
 			}
 			else
 			{
-				exit_status = print_error(args[i]);
+				exit_status = 1;
+				print_error(args[i]);
 			}
+			*equal_sign = '=';  // Restore the '=' sign
 		}
 		else
 		{
-			if (ft_check_key(arg_copy))
+			if (ft_check_key(args[i]))
 			{
-				ft_setenv(env_list, arg_copy, NULL);
+				ft_setenv(env_list, args[i], NULL);
 			}
 			else
 			{
-				exit_status = print_error(args[i]);
+				exit_status = 1;
+				print_error(args[i]);
 			}
 		}
-		free(arg_copy);
 		i++;
 	}
 	return (exit_status);
 }
-

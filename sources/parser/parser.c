@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:03:17 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 18:36:33 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/06 20:53:25 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	count_cmds(t_token *tokens)
 	return (num_cmds);
 }
 
-t_token	*add_tokens(int num_tokens, char **words)
+t_token	*add_tokens(int num_tokens, char **words, t_env **env_list)
 {
 	t_token_type	type;
 	t_token			*tokens;
@@ -49,17 +49,24 @@ t_token	*add_tokens(int num_tokens, char **words)
 			|| (words[i][0] == '>' && words[i][1] != '>'))
 			words[i]++;
 		if (tokens == NULL)
-		{
 			tokens = lstnew_token(words[i], type);
-		}
 		else
-			lstadd_token(&tokens, lstnew_token(words[i], type));
+		{
+			if (type == DOLLAR)
+			{
+				words[i]++;
+				printf("HELLOOOOO??? %s\n", words[i]);
+				lstadd_token(&tokens, lstnew_token(get_env(env_list, words[i]), type));
+			}
+			else
+				lstadd_token(&tokens, lstnew_token(words[i], type));
+		}
 		i++;
 	}
 	return (tokens);
 }
 
-t_command	*parse(char *input)
+t_command	*parse(char *input, t_env **env_list)
 {
 	int			num_tokens;
 	int			num_cmds;
@@ -69,14 +76,14 @@ t_command	*parse(char *input)
 
 	words = custom_split(input, ' ', TOKEN);
 	num_tokens = count_words(input, ' ', TOKEN);
-	tokens = add_tokens(num_tokens, words);
+	tokens = add_tokens(num_tokens, words, env_list);
 	num_cmds = count_cmds(tokens);
 	cmds = ft_malloc(num_cmds * sizeof(t_command), R_NULL);
 	cmds->inred = NULL;
 	cmds->outred = NULL;
 	cmds->args = NULL;
 	cmds->pipe_num = 0;
-	cmds = add_commands(cmds, tokens);
+	cmds = add_commands(cmds, tokens, env_list);
 	start_debug_mode(words, num_tokens, tokens, num_cmds, cmds);
 	return (cmds);
 }

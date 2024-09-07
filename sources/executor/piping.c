@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 19:47:32 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 20:13:28 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/09/07 19:24:03 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,11 @@ char	*find_cmd_path(char *command)
 	return (NULL);
 }
 
-int exec_command(t_command *command, t_env *env_list)
+int exec_command(t_command *command, t_env *env_list, char **argv)
 {
 	t_inred *inred;
 	t_outred *outred;
-	char **argv;
-	char *null_ptr;
 	char *path;
-	int i;
 	int in_fd;
 	int out_fd;
 
@@ -89,18 +86,6 @@ int exec_command(t_command *command, t_env *env_list)
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-	argv = ft_malloc(sizeof(char *) * (ft_arglstsize(command->args) + 1), R_NULL);
-	null_ptr = ft_malloc(sizeof(char), R_NULL);
-	null_ptr = NULL;
-	argv[0] = command->args->token->value;
-	i = 1;
-	while (command->args->next)
-	{
-		command->args = command->args->next;
-		argv[i] = command->args->token->value;
-		i++;
-	}
-	argv[i] = null_ptr;
 	if (ft_strcmp(argv[0], "cd") == 0)
 		return (builtin_cd(argv));
 	else if (ft_strcmp(argv[0], "echo") == 0)
@@ -111,11 +96,18 @@ int exec_command(t_command *command, t_env *env_list)
 		return (ft_pwd(), 0);
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		return (ft_unset(&env_list, argv), 0);
-	path = find_cmd_path(argv[0]);
-	if (path)
-	{
-		execve(path, argv, NULL);
+	else if (ft_strcmp(argv[0], "env") == 0)
+		return (print_env(env_list), 0);
+	else if (ft_strcmp(argv[0], "exit") == 0)
 		return (0);
+	path = find_cmd_path(argv[0]);
+	printf("argv[0] = %s\n", argv[0]);	// Debug
+	if (path || ft_strchr(argv[0], '/'))
+	{
+		if(!path)
+			path = argv[0];
+		execve(path, argv, NULL);
+		
 	}
 	else
 	{
@@ -124,6 +116,7 @@ int exec_command(t_command *command, t_env *env_list)
 		write(2, "error: command not found\n", 25);
 		return (1);
 	}
+	return (0);
 }
 
 int forking(t_command *cmds, int process_num, t_env *env_list)
@@ -132,7 +125,40 @@ int forking(t_command *cmds, int process_num, t_env *env_list)
 	int i;
 	int	j;
 	pid_t pid[process_num];
-
+	char **argv;
+	char *null_ptr;
+	
+	argv = ft_malloc(sizeof(char *) * (ft_arglstsize(cmds->args) + 1), R_NULL);
+	null_ptr = ft_malloc(sizeof(char), R_NULL);
+	null_ptr = NULL;
+	argv[0] = cmds->args->token->value;
+	i = 1;
+	while (cmds->args->next)
+	{
+		cmds->args = cmds->args->next;
+		argv[i] = cmds->args->token->value;
+		i++;
+	}
+	argv[i] = null_ptr;
+	if (process_num == 1)
+	{
+		if (ft_strcmp(cmds->args->token->value, "exit") == 0)
+			return (ft_exit(env_list, cmds));
+		if (ft_strcmp(argv[0], "cd") == 0)
+			return (builtin_cd(argv));
+		else if (ft_strcmp(argv[0], "echo") == 0)
+			return (ft_echo(argv), 0);
+		else if (ft_strcmp(argv[0], "export") == 0)
+			return (ft_export(&env_list, argv), 0);
+		else if (ft_strcmp(argv[0], "pwd") == 0)
+			return (ft_pwd(), 0);
+		else if (ft_strcmp(argv[0], "unset") == 0)
+			return (ft_unset(&env_list, argv), 0);
+		else if (ft_strcmp(argv[0], "env") == 0)
+			return (print_env(env_list), 0);
+		else if (ft_strcmp(argv[0], "exit") == 0)
+			return (0);
+	}
 	i = 0;
 	while (i < process_num - 1)
 	{
@@ -168,7 +194,7 @@ int forking(t_command *cmds, int process_num, t_env *env_list)
                 close(pipes[j][1]);
 				j++;
             }
-            exec_command(&cmds[i], env_list);
+            exec_command(&cmds[i], env_list, argv);
             // exit(EXIT_FAILURE);  // In case exec_command returns
 			// break ;
 		}

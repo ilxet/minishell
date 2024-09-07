@@ -6,7 +6,7 @@
 #    By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 17:15:13 by pschmunk          #+#    #+#              #
-#    Updated: 2024/09/06 19:47:48 by aadamik          ###   ########.fr        #
+#    Updated: 2024/09/07 18:41:45 by aadamik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ MINISHELL_SRC =	./sources/minishell.c				\
 				./sources/executor/export.c			\
 				./sources/executor/pwd.c			\
 				./sources/executor/unset.c			\
-				./sources/executor/simple_exec.c	\
+				./sources/executor/exit.c			\
 				./sources/executor/piping.c			\
 				./sources/parser/env.c				\
 				./sources/parser/parser.c			\
