@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   piping.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 19:47:32 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 20:13:28 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/09/07 20:34:48 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ int exec_command(t_command *command, t_env *env_list)
 	argv[i] = null_ptr;
 	if (ft_strcmp(argv[0], "cd") == 0)
 		return (builtin_cd(argv));
-	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (ft_echo(argv), 0);
+	// else if (ft_strcmp(argv[0], "echo") == 0)
+	// 	return (ft_echo(argv), 0);
 	else if (ft_strcmp(argv[0], "export") == 0)
 		return (ft_export(&env_list, argv), 0);
 	else if (ft_strcmp(argv[0], "pwd") == 0)

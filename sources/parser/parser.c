@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:03:17 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 20:53:25 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/07 21:27:00 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,16 @@ t_token	*add_tokens(int num_tokens, char **words, t_env **env_list)
 			|| (words[i][0] == '>' && words[i][1] != '>'))
 			words[i]++;
 		if (tokens == NULL)
-			tokens = lstnew_token(words[i], type);
+		{
+			if (type == DOLLAR)
+				tokens = lstnew_token(get_env(env_list, words[i]), type);
+			else
+				tokens = lstnew_token(words[i], type);
+		}
 		else
 		{
 			if (type == DOLLAR)
-			{
-				words[i]++;
-				printf("HELLOOOOO??? %s\n", words[i]);
 				lstadd_token(&tokens, lstnew_token(get_env(env_list, words[i]), type));
-			}
 			else
 				lstadd_token(&tokens, lstnew_token(words[i], type));
 		}

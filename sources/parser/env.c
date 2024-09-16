@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 17:44:29 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 20:33:17 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/07 20:49:32 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,17 +108,43 @@ void add_to_env_list(t_env **env_list, char *var)
     }
 }
 
+int	custom_strlen(char *str, char delimiter)
+{
+	int	len;
+
+	len = 0;
+	while (str[len] != delimiter)
+		len++;
+	return (len);
+}
+
 char	*get_env(t_env **env_list, char *str)
 {
 	int		i;
+	char	*ptr;
 	t_env	*env_list_cpy;
 
 	i = 0;
 	env_list_cpy = *env_list;
+	while (str[i] != '$')
+		i++;
+	i++;
+	ptr = ft_malloc(i * sizeof(char), R_NULL);
+	i = 0;
+	while (str[i] != '$')
+	{
+		ptr[i] = str[i];
+		i++;
+	}
+	ptr[i] = '\0';
 	while (env_list_cpy)
 	{
-		if (ft_strcmp(str, env_list_cpy->start_key))
-			return (env_list_cpy->start_value);
+		while (*str != '$')
+			str++;
+		str++;
+		if (ft_strlen(str) == custom_strlen(env_list_cpy->env_var, '='))
+			if (ft_strncmp(str, env_list_cpy->env_var, ft_strlen(str)) == 0)
+				return (ft_strjoin(ptr, env_list_cpy->start_value));
 		env_list_cpy = env_list_cpy->next;
 	}
 	return (NULL);
