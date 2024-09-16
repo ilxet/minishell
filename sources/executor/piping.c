@@ -6,11 +6,78 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 19:47:32 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/07 19:24:03 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/09/14 12:51:06 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char *remove_single_quotes(char *str)
+{
+	int len;
+	int new_len;
+	char *start;
+	char *end;
+	char *new_str;
+	int prefix_len;
+
+	if (!str)
+		return NULL;
+	len = strlen(str);
+	if (len == 0)
+		return strdup("");
+	start = ft_strchr(str, '\'');
+	end = ft_strrchr(str, '\'');
+	if (start && end && start != end)
+	{
+		new_len = len - 2;
+		new_str = (char *)ft_malloc((new_len + 1), R_NULL); // +1 for the null terminator
+		prefix_len = start - str;
+		ft_strncpy(new_str, str, prefix_len);
+		// Copy the part between the first and last single quotes
+		ft_strncpy(new_str + prefix_len, start + 1, end - start - 1);
+		// Copy the part after the last single quote
+		ft_strcpy(new_str + prefix_len + (end - start - 1), end + 1);
+		new_str[new_len] = '\0'; // Null-terminate the new string
+		return (new_str);
+	}
+	// If the first and last single quotes are the same or not found, return a copy of the original string
+	return (ft_strdup(str));
+}
+
+char *remove_double_quotes(char *str)
+{
+	int len;
+	int new_len;
+	char *start;
+	char *end;
+	char *new_str;
+	int prefix_len;
+
+	if (!str)
+		return NULL;
+	len = strlen(str);
+	if (len == 0)
+		return strdup("");
+	start = ft_strchr(str, '\"');
+	end = ft_strrchr(str, '\"');
+	if (start && end && start != end)
+	{
+		new_len = len - 2;
+		new_str = (char *)ft_malloc((new_len + 1), R_NULL); // +1 for the null terminator
+		prefix_len = start - str;
+		ft_strncpy(new_str, str, prefix_len);
+		// Copy the part between the first and last double quotes
+		ft_strncpy(new_str + prefix_len, start + 1, end - start - 1);
+		// Copy the part after the last double quote
+		ft_strcpy(new_str + prefix_len + (end - start - 1), end + 1);
+		new_str[new_len] = '\0'; // Null-terminate the new string
+		return (new_str);
+	}
+	// If the first and last double quotes are the same or not found, return a copy of the original string
+	return (ft_strdup(str));
+}
+
 
 int	ft_arglstsize(t_args *lst)
 {
@@ -125,19 +192,24 @@ int forking(t_command *cmds, int process_num, t_env *env_list)
 	int i;
 	int	j;
 	pid_t pid[process_num];
-	char **argv;
+	char *argv[ft_arglstsize(cmds->args) + 1];
 	char *null_ptr;
 	
-	argv = ft_malloc(sizeof(char *) * (ft_arglstsize(cmds->args) + 1), R_NULL);
+	*argv = ft_malloc(sizeof(char *) * (ft_arglstsize(cmds->args) + 1), R_NULL);
 	null_ptr = ft_malloc(sizeof(char), R_NULL);
 	null_ptr = NULL;
 	argv[0] = cmds->args->token->value;
 	i = 1;
-	while (cmds->args->next)
+	while (cmds->args->token->next)
 	{
-		cmds->args = cmds->args->next;
-		argv[i] = cmds->args->token->value;
+		cmds->args->token = cmds->args->token->next;
+		if (cmds->args->token->type != SPACE_T)
+		{
+			argv[i] = cmds->args->token->value;
+			if (ft_strchr(argv[i], '\"') != ft_strrchr(argv[i], '\"'))
+				argv[i] = remove_double_quotes(argv[i]);
 		i++;
+		}
 	}
 	argv[i] = null_ptr;
 	if (process_num == 1)

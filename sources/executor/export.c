@@ -6,11 +6,24 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:10:49 by aadamik           #+#    #+#             */
-/*   Updated: 2024/09/07 18:26:29 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/09/15 12:07:26 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+t_env	*find_env_var(t_env *env_list, char *key)
+{
+	while (env_list)
+	{
+		if (ft_strcmp(env_list->start_key, key) == 0)
+		{
+			return env_list;
+		}
+		env_list = env_list->next;
+	}
+	return NULL;
+}
 
 void swap_env_vars(t_env **a, t_env **b)
 {
@@ -221,18 +234,23 @@ int	ft_export(t_env **env_list, char **args)
 	if (!args[1])
 	{
 		print_sorted_env_vars(*env_list);
-		printf("error check, args[1]= %s \n", args[1]);
 		return (0);
 	}
 	while (args[i])
 	{
+		printf("args[%d] = %s\n", i, args[i]);
 		equal_sign = ft_strchr(args[i], '=');
 		if (equal_sign)
 		{
 			*equal_sign = '\0';
 			if (ft_check_key(args[i]))
 			{
-				ft_setenv(env_list, args[i], equal_sign + 1);
+				if (*(equal_sign + 1) == '\'' && ft_strrchr(args[i], '\'') && (equal_sign + 1) != ft_strrchr(args[i], '\''))
+					ft_setenv(env_list, extract_key(args[i], equal_sign), remove_single_quotes(equal_sign + 1));
+				else if (*(equal_sign + 1) == '\"' && ft_strrchr(args[i], '\"') && (equal_sign + 1) != ft_strrchr(args[i], '\"'))
+					ft_setenv(env_list, extract_key(args[i], equal_sign), remove_double_quotes(equal_sign + 1));
+				else
+					ft_setenv(env_list, args[i], equal_sign + 1);
 			}
 			else
 			{
