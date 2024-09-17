@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 20:57:47 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/17 19:00:59 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct s_env
 	char			*end_key;			// Pointer to the end of the key
 	char			*start_value;		// Pointer to the start of the value
 	char			*end_value;			// Pointer to the end of the value
+	int				explicitly_set;  	// New flag
 	struct s_env	*next;				// Pointer to the next node in the linked list
 }	t_env;
 
@@ -147,14 +148,17 @@ int				ft_check_key(char *key);
 void			ft_unsetenv(t_env **env_list, char *key);
 int				ft_unset(t_env **env_list, char **args);
 int				ft_export(t_env **env_list, char **args);
+int				ft_exit(t_env *env_list, t_command *cmd);
 t_env			*create_env_node(char *var);
 int				count_env_vars(t_env *env_list);
 void			bubble_sort_env_vars(t_env **env_array, int count);
-void			ft_setenv(t_env **env_list, char *key, char *value);
 void			swap_env_vars(t_env **a, t_env **b);
-int				exec_command(t_command *command, t_env *env_list);
+int				exec_command(t_command *command, t_env *env_list, char **argv);
 int				forking(t_command *command, int process_num, t_env *env_list);
 char			*get_path(char *command, t_env *env_list);
+char			*remove_double_quotes(char *str);
+char			*remove_single_quotes(char *str);
+t_env			*find_env_var(t_env *env_list, char *key);
 
 //UTILS
 char			*ft_strjoin3(char *s1,char *s2, char *s3);

@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/06 20:10:46 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/17 19:00:43 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,13 @@ t_command	*add_commands(t_command *cmds, t_token *tokens, t_env **env_list)
 		else if (tokens->type == HDOC)
 			do_hdoc(tokens);
 		else if (tokens->type == ENV)
+		{
+			if (ft_strchr(tokens->value, '=') != NULL && ft_strchr(tokens->value, '\"') && (ft_strchr(tokens->value, '\"') != ft_strrchr(tokens->value, '\"')))
+				tokens->value = remove_double_quotes(tokens->value);
+			else if (ft_strchr(tokens->value, '=') != NULL && ft_strchr(tokens->value, '\'') && (ft_strchr(tokens->value, '\'') != ft_strrchr(tokens->value, '\'')))
+				tokens->value = remove_single_quotes(tokens->value);
 			add_to_env_list(env_list, tokens->value);
+		}
 		else if (tokens->type != SPACE_T
 			&& tokens->type != APPEND
 			&& tokens->type != ERROR)

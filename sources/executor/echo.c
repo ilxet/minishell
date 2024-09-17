@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:23:12 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/05 17:38:09 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/09/16 22:06:49 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void ft_echo(char **args)
 	int i;
 	int n_flag;
 
-	i = 2;
+	i = 1;
 	n_flag = 0;
 	// while (args[i])
 	// {
