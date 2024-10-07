@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/16 21:58:08 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:17:35 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	main(int ac, char **av, char **env)
 			cmds = parse(input, &env_list);
 			add_history(input);
 			if (cmds->args)
-				forking(cmds, (cmds->pipe_num + 1), env_list);
+				forking2(cmds, (cmds->pipe_num + 1), &env_list);
+				// forking(cmds, (cmds->pipe_num + 1), env_list);
 			// print_env(env_list);
 		}
 		else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/17 19:00:59 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/10/07 19:07:42 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void			lstadd_token(t_token **lst, t_token *new);
 void			lstadd_args(t_args **lst, t_args *new);
 void			lstadd_inred(t_inred **lst, t_inred *new);
 void			lstadd_outred(t_outred **lst, t_outred *new);
-t_command		*add_commands(t_command *cmds, t_token *tokens, t_env **env_list);
+t_command		*add_commands(t_command *cmds, t_token *tokens);
 t_command 		*parse(char *input, t_env **env_list);
 t_env			*create_node(char *env_var);
 t_env			*built_env_list(char *envp[]);
@@ -138,7 +138,6 @@ int				ft_export(t_env **env_list, char **args);
 t_env			*create_env_node(char *var);
 int				count_env_vars(t_env *env_list);
 void			bubble_sort_env_vars(t_env **env_array, int count);
-void			ft_setenv(t_env **env_list, char *key, char *value);
 void			swap_env_vars(t_env **a, t_env **b);
 char 			*extract_key(char *arg, char *equal_sign);
 int				builtin_cd(char **args);
@@ -148,17 +147,19 @@ int				ft_check_key(char *key);
 void			ft_unsetenv(t_env **env_list, char *key);
 int				ft_unset(t_env **env_list, char **args);
 int				ft_export(t_env **env_list, char **args);
-int				ft_exit(t_env *env_list, t_command *cmd);
+int				ft_exit(t_env **env_list, t_command *cmd);
 t_env			*create_env_node(char *var);
 int				count_env_vars(t_env *env_list);
 void			bubble_sort_env_vars(t_env **env_array, int count);
 void			swap_env_vars(t_env **a, t_env **b);
 int				exec_command(t_command *command, t_env *env_list, char **argv);
-int				forking(t_command *command, int process_num, t_env *env_list);
+// int				forking(t_command *command, int process_num, t_env *env_list);
+int				forking2(t_command *cmds, int process_num, t_env **env_list);
 char			*get_path(char *command, t_env *env_list);
 char			*remove_double_quotes(char *str);
 char			*remove_single_quotes(char *str);
 t_env			*find_env_var(t_env *env_list, char *key);
+int				check_if_key_exists(t_env *env_list, char *key);
 
 //UTILS
 char			*ft_strjoin3(char *s1,char *s2, char *s3);

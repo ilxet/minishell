@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:08:56 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/17 19:00:43 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:12:19 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	add_to_command(t_command *cmd, t_token *token)
 	}
 }
 
-t_command	*add_commands(t_command *cmds, t_token *tokens, t_env **env_list)
+t_command	*add_commands(t_command *cmds, t_token *tokens)
 {
 	int	i;
 	int	cmd_i;
@@ -110,7 +110,7 @@ t_command	*add_commands(t_command *cmds, t_token *tokens, t_env **env_list)
 				tokens->value = remove_double_quotes(tokens->value);
 			else if (ft_strchr(tokens->value, '=') != NULL && ft_strchr(tokens->value, '\'') && (ft_strchr(tokens->value, '\'') != ft_strrchr(tokens->value, '\'')))
 				tokens->value = remove_single_quotes(tokens->value);
-			add_to_env_list(env_list, tokens->value);
+			// add_to_env_list(env_list, tokens->value);
 		}
 		else if (tokens->type != SPACE_T
 			&& tokens->type != APPEND

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 17:44:29 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/16 21:41:40 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:58:37 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,41 @@ void	free_env(t_env *head)
 
 void add_to_env_list(t_env **env_list, char *var)
 {
-    t_env *new_node;
-	
-	new_node = create_env_node(var);
-    if (new_node)
-    {
-        new_node->next = *env_list;
-        *env_list = new_node;
-    }
+    t_env	*new_node;
+	t_env	*existing_node;
+	char	*equal_sign;
+	char	*key;
+
+	equal_sign = ft_strchr(var, '=');
+	if (!equal_sign)
+	{
+		write(2, "Error with env variable", 24);
+		exit(1);
+	}
+	key = ft_substr(var, 0, equal_sign - var);
+	existing_node = find_env_var(*env_list, key);
+	free(key);
+	if (existing_node)
+	{
+		free(existing_node->env_var);
+		existing_node->env_var = ft_strdup(var);
+		existing_node->equal_sign = ft_strchr(var, '=');
+		existing_node->start_key = var;
+		existing_node->end_key = existing_node->equal_sign - 1;
+		existing_node->start_value = existing_node->equal_sign + 1;
+		existing_node->end_value = ft_strchr(var, '\0') - 1;
+		existing_node->explicitly_set = 1;
+		return ;
+	}
+	else
+	{
+		new_node = create_env_node(var);
+    	if (new_node)
+    	{
+        	new_node->next = *env_list;
+        	*env_list = new_node;
+    	}
+	}
 }
 
 int	custom_strlen(char *str, char delimiter)

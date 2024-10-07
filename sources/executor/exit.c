@@ -6,13 +6,13 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:15:45 by aadamik           #+#    #+#             */
-/*   Updated: 2024/09/07 16:00:37 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/07 17:27:33 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_exit(t_env *env_list, t_command *cmd)
+int	ft_exit(t_env **env_list, t_command *cmd)
 {
 	int		exit_status;
 	t_args	*current;
@@ -20,7 +20,7 @@ int	ft_exit(t_env *env_list, t_command *cmd)
 	if (!cmd->args->next)
 	{
 		printf("exit\n");
-		free_env(env_list);
+		free_env(*env_list);
 		exit(0);
 	}
 	current = cmd->args->next;
@@ -44,7 +44,7 @@ int	ft_exit(t_env *env_list, t_command *cmd)
 		}
 		exit_status = ft_atoi(((t_args *)cmd->args->next)->token->value);
 	}
-	free_env(env_list);
+	free_env(*env_list);
 	exit(exit_status);
 	return (0);
 }

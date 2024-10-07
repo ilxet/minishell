@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:10:49 by aadamik           #+#    #+#             */
-/*   Updated: 2024/09/15 12:07:26 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/07 19:07:48 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,57 +156,6 @@ t_env	*create_env_node(char *var)
 	return (new_node);
 }
 
-void	ft_setenv(t_env **env_list, char *key, char *value)
-{
-	t_env	*current;
-	t_env	*new_node;
-	char	*new_var;
-
-	current = *env_list;
-	while (current)
-	{
-		if (ft_strcmp(current->start_key, key) == 0)
-		{
-			if (value)
-				new_var = ft_strjoin3(key, "=", value);
-			else
-				new_var = ft_strdup(key);
-			if (!new_var)
-				return;
-			free(current->env_var);
-			current->env_var = new_var;
-			current->equal_sign = ft_strchr(current->env_var, '=');
-			current->start_key = current->env_var;
-			if (current->equal_sign)
-				current->end_key = current->equal_sign - 1;
-			else
-				current->end_key = current->env_var + ft_strlen(current->env_var) - 1;
-			if (current->equal_sign)
-				current->start_value = current->equal_sign + 1;
-			else
-				current->start_value = NULL;
-			if (current->start_value)
-				current->end_value = current->env_var + ft_strlen(current->env_var) - 1;
-			else
-				current->end_value = NULL;
-			return;
-		}
-		current = current->next;
-	}
-	if (value)
-		new_var = ft_strjoin3(key, "=", value);
-	else
-		new_var = ft_strdup(key);
-	if (!new_var)
-		return;
-	new_node = create_env_node(new_var);
-	free(new_var);
-	if (!new_node)
-		return;
-	new_node->next = *env_list;
-	*env_list = new_node;
-}
-
 char *extract_key(char *arg, char *equal_sign)
 {
 	int key_length;
@@ -227,6 +176,7 @@ int	ft_export(t_env **env_list, char **args)
 {
 	int		i;
 	int		exit_status;
+	char	*copy_to_get_key;
 	char	*equal_sign;
 
 	i = 1;
@@ -238,32 +188,34 @@ int	ft_export(t_env **env_list, char **args)
 	}
 	while (args[i])
 	{
-		printf("args[%d] = %s\n", i, args[i]);
-		equal_sign = ft_strchr(args[i], '=');
+		copy_to_get_key = ft_strdup(args[i]);
+		if (!copy_to_get_key)
+			return (1);
+		equal_sign = ft_strchr(copy_to_get_key, '=');
 		if (equal_sign)
 		{
 			*equal_sign = '\0';
-			if (ft_check_key(args[i]))
+			if (ft_check_key(copy_to_get_key) && !find_env_var(*env_list, copy_to_get_key))
 			{
-				if (*(equal_sign + 1) == '\'' && ft_strrchr(args[i], '\'') && (equal_sign + 1) != ft_strrchr(args[i], '\''))
-					ft_setenv(env_list, extract_key(args[i], equal_sign), remove_single_quotes(equal_sign + 1));
-				else if (*(equal_sign + 1) == '\"' && ft_strrchr(args[i], '\"') && (equal_sign + 1) != ft_strrchr(args[i], '\"'))
-					ft_setenv(env_list, extract_key(args[i], equal_sign), remove_double_quotes(equal_sign + 1));
-				else
-					ft_setenv(env_list, args[i], equal_sign + 1);
+				add_to_env_list(env_list, args[i]);
+				// printf("Debug: Added %s to env_list\n", args[i]); // Uncomment for debugging
+			}
+			else if (ft_check_key(copy_to_get_key) && find_env_var(*env_list, copy_to_get_key))
+			{
+				update_env_var(env_list, copy_to_get_key, equal_sign + 1);
 			}
 			else
 			{
 				exit_status = 1;
 				print_error(args[i]);
 			}
-			*equal_sign = '=';  // Restore the '=' sign
 		}
 		else
 		{
-			if (ft_check_key(args[i]))
+			if (ft_check_key(copy_to_get_key))
 			{
-				ft_setenv(env_list, args[i], NULL);
+				add_to_env_list(env_list, args[i]);
+				// printf("Debug: Added %s to env_list\n", args[i]); // Uncomment for debugging
 			}
 			else
 			{
@@ -271,7 +223,9 @@ int	ft_export(t_env **env_list, char **args)
 				print_error(args[i]);
 			}
 		}
+		free(copy_to_get_key);
 		i++;
 	}
 	return (exit_status);
 }
+

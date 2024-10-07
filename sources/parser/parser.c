@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:03:17 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/09/17 19:01:24 by pschmunk         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:12:39 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_command	*parse(char *input, t_env **env_list)
 	cmds->outred = NULL;
 	cmds->args = NULL;
 	cmds->pipe_num = 0;
-	cmds = add_commands(cmds, tokens, env_list);
+	cmds = add_commands(cmds, tokens);
 	start_debug_mode(words, num_tokens, tokens, num_cmds, cmds);
 	return (cmds);
 }
