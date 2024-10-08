@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/10/07 19:07:42 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/08 16:47:10 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ char			*remove_double_quotes(char *str);
 char			*remove_single_quotes(char *str);
 t_env			*find_env_var(t_env *env_list, char *key);
 int				check_if_key_exists(t_env *env_list, char *key);
+void			delete_env_var(t_env **env_list, char *key);
 
 //UTILS
 char			*ft_strjoin3(char *s1,char *s2, char *s3);

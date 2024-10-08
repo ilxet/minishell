@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:10:49 by aadamik           #+#    #+#             */
-/*   Updated: 2024/10/07 19:07:48 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/08 17:01:00 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_env	*find_env_var(t_env *env_list, char *key)
 {
 	while (env_list)
 	{
-		if (ft_strcmp(env_list->start_key, key) == 0)
+		if (ft_strncmp(env_list->start_key, key, env_list->end_key - env_list->start_key) == 0)
 		{
 			return env_list;
 		}
@@ -172,6 +172,34 @@ char *extract_key(char *arg, char *equal_sign)
 	return key;
 }
 
+void delete_env_var(t_env **env_list, char *key)
+{
+	t_env *current;
+	t_env *previous;
+
+	current = *env_list;
+	previous = NULL;
+	while (current)
+	{
+		if (ft_strncmp(current->start_key, key, current->end_key - current->start_key) == 0)
+		{
+			if (previous)
+			{
+				previous->next = current->next;
+			}
+			else
+			{
+				*env_list = current->next;
+			}
+			free(current->env_var);
+			free(current);
+			return;
+		}
+		previous = current;
+		current = current->next;
+	}
+}
+
 int	ft_export(t_env **env_list, char **args)
 {
 	int		i;
@@ -195,14 +223,14 @@ int	ft_export(t_env **env_list, char **args)
 		if (equal_sign)
 		{
 			*equal_sign = '\0';
-			if (ft_check_key(copy_to_get_key) && !find_env_var(*env_list, copy_to_get_key))
+			if (find_env_var(*env_list, copy_to_get_key))
+			{
+				delete_env_var(env_list, copy_to_get_key);
+			}
+			if (ft_check_key(copy_to_get_key))
 			{
 				add_to_env_list(env_list, args[i]);
 				// printf("Debug: Added %s to env_list\n", args[i]); // Uncomment for debugging
-			}
-			else if (ft_check_key(copy_to_get_key) && find_env_var(*env_list, copy_to_get_key))
-			{
-				update_env_var(env_list, copy_to_get_key, equal_sign + 1);
 			}
 			else
 			{
