@@ -6,49 +6,28 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 20:57:57 by aadamik           #+#    #+#             */
-/*   Updated: 2024/08/06 18:06:08 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/08 17:20:55 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// int	ft_check_key(char *key)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	if (!ft_isalpha(key[0]) && key[0] != '_')
-// 		return (0);
-// 	while (key[i] && key[i] != '=')
-// 	{
-// 		if (!ft_isalnum(key[i]) && key[i] != '_')
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
 int ft_check_key(char *key)
 {
 	int i;
 
-	printf("Debug: Checking key: %s\n", key);
-
 	if (!key)
 	{
-		printf("Debug: Key is NULL\n");
 		return 0;
 	}
 
 	if (*key == '\0')
 	{
-		printf("Debug: Key is empty\n");
 		return 0;
 	}
 
 	if (!ft_isalpha(*key) && *key != '_')
 	{
-		printf("Debug: First character is not alphabetic or underscore: %c\n", *key);
 		return 0;
 	}
 
@@ -57,13 +36,10 @@ int ft_check_key(char *key)
 	{
 		if (!ft_isalnum(key[i]) && key[i] != '_')
 		{
-			printf("Debug: Invalid character in key: %c\n", key[i]);
 			return 0;
 		}
 		i++;
 	}
-
-	printf("Debug: Key is valid\n");
 	return 1;
 }
 

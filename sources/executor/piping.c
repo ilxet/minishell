@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 19:47:32 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/10/07 17:34:24 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/09 17:56:37 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,6 +299,8 @@ int forking2(t_command *cmds, int process_num, t_env **env_list)
 	pid_t pid[process_num];
 	char *argv[ft_arglstsize(cmds->args) + 1];
 	char *null_ptr;
+	int k;
+	int fd;
 	
 	*argv = ft_malloc(sizeof(char *) * (ft_arglstsize(cmds->args) + 1), R_NULL);
 	null_ptr = ft_malloc(sizeof(char), R_NULL);
@@ -371,6 +373,30 @@ int forking2(t_command *cmds, int process_num, t_env **env_list)
                 close(pipes[j][1]);
 				j++;
             }
+			//>> start
+			k = 0;
+			while (argv[k] != NULL)
+			{
+				if (ft_strcmp(argv[k], ">>") == 0)
+				{
+					fd = open(argv[k + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+					if (fd == -1)
+					{
+						write(2, "error: open\n", 12);
+						return (1);
+					}
+					if (dup2(fd, STDOUT_FILENO) == -1)
+					{
+						write(2, "error: dup2\n", 12);
+						return (1);
+					}
+					close(fd);
+					argv[k] = NULL;
+					break;
+				}
+				k++;
+			}
+			//>> end
             exec_command(&cmds[i], *env_list, argv);
             // exit(EXIT_FAILURE);  // In case exec_command returns
 			// break ;
