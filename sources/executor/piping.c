@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 19:47:32 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/10/09 17:56:37 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/18 14:25:41 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,7 +291,7 @@ int exec_command(t_command *command, t_env *env_list, char **argv)
 // 	return (0);
 // }
 
-int forking2(t_command *cmds, int process_num, t_env **env_list)
+int forking2(t_command *cmds, int process_num, t_env **env_list, int *last_exit_status)
 {
 	int pipes[process_num -1][2];
 	int i;
@@ -301,6 +301,7 @@ int forking2(t_command *cmds, int process_num, t_env **env_list)
 	char *null_ptr;
 	int k;
 	int fd;
+	int status;
 	
 	*argv = ft_malloc(sizeof(char *) * (ft_arglstsize(cmds->args) + 1), R_NULL);
 	null_ptr = ft_malloc(sizeof(char), R_NULL);
@@ -397,6 +398,17 @@ int forking2(t_command *cmds, int process_num, t_env **env_list)
 				k++;
 			}
 			//>> end
+			// $? start
+			k = 0;
+			while (argv[k] != NULL)
+			{
+				if (ft_strcmp(argv[k], "$?") == 0)
+				{
+					ft_printf("%d\n", *last_exit_status);
+				}
+				k++;
+			}
+			// $? end
             exec_command(&cmds[i], *env_list, argv);
             // exit(EXIT_FAILURE);  // In case exec_command returns
 			// break ;
@@ -413,10 +425,10 @@ int forking2(t_command *cmds, int process_num, t_env **env_list)
 	}
 	i = 0;
 	while (i < process_num) {
-		int status;
 		wait(&status);
 		if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
-			fprintf(stderr, "Command %d exited with non-zero status %d\n", i, WEXITSTATUS(status));
+			*last_exit_status = WEXITSTATUS(status);
+			ft_printf("Command %d exited with non-zero status %d\n", i, *last_exit_status);
 		}
 		i++;
 	}

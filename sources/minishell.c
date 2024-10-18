@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/18 23:17:35 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/18 14:17:28 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	main(int ac, char **av, char **env)
 	char		*input;
 	t_command	*cmds;
 	t_env		*env_list;
-
+	int			last_exit_status;
+	
 	(void)ac;
 	(void)av;
 	env_list = built_env_list(env);
@@ -33,7 +34,7 @@ int	main(int ac, char **av, char **env)
 			cmds = parse(input, &env_list);
 			add_history(input);
 			if (cmds->args)
-				forking2(cmds, (cmds->pipe_num + 1), &env_list);
+				forking2(cmds, (cmds->pipe_num + 1), &env_list, &last_exit_status);
 				// forking(cmds, (cmds->pipe_num + 1), env_list);
 			// print_env(env_list);
 		}

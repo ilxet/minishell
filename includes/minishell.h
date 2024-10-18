@@ -6,7 +6,7 @@
 /*   By: aadamik <aadamik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:18:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2024/10/08 16:47:10 by aadamik          ###   ########.fr       */
+/*   Updated: 2024/10/18 14:17:54 by aadamik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void			bubble_sort_env_vars(t_env **env_array, int count);
 void			swap_env_vars(t_env **a, t_env **b);
 int				exec_command(t_command *command, t_env *env_list, char **argv);
 // int				forking(t_command *command, int process_num, t_env *env_list);
-int				forking2(t_command *cmds, int process_num, t_env **env_list);
+int				forking2(t_command *cmds, int process_num, t_env **env_list, int *last_exit_status);
 char			*get_path(char *command, t_env *env_list);
 char			*remove_double_quotes(char *str);
 char			*remove_single_quotes(char *str);
